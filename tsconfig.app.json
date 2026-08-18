@@ -22,9 +22,9 @@
 
     /* Aliases */
     "paths": {
-      "@/*": ["./app/frontend/*"]
+      "@/*": ["./app/javascript/*"]
     }
   },
 
-  "include": ["app/frontend/**/*.ts", "app/frontend/**/*.tsx", "app/frontend/**/*.vue"]
+  "include": ["app/javascript/**/*.ts", "app/javascript/**/*.tsx", "app/javascript/**/*.vue"]
 }

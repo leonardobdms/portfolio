@@ -1,7 +1,7 @@
 {
   "compilerOptions": {
     "paths": {
-      "@/*": ["./app/frontend/*"]
+      "@/*": ["./app/javascript/*"]
     }
   },
   "files": [],

@@ -1,9 +1,11 @@
 # frozen_string_literal: true
 
 class HomeController < InertiaController
-  skip_before_action :authenticate
-  before_action :perform_authentication
-
   def index
+    render inertia: {
+      rails_version: Rails.version,
+      ruby_version: RUBY_DESCRIPTION,
+      inertia_rails_version: InertiaRails::VERSION
+    }
   end
 end

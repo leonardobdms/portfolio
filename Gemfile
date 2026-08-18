@@ -12,7 +12,7 @@ gem "puma", ">= 5.0"
 gem "jbuilder"
 
 # Use Active Model has_secure_password [https://guides.rubyonrails.org/active_model_basics.html#securepassword]
-gem "bcrypt", "~> 3.1.7"
+# gem "bcrypt", "~> 3.1.7"
 
 # Windows does not include zoneinfo files, so bundle the tzinfo-data gem
 gem "tzinfo-data", platforms: %i[ windows jruby ]
@@ -32,16 +32,12 @@ gem "kamal", require: false, group: [ :development, :deploy ]
 gem "thruster", require: false
 
 # Use Active Storage variants [https://guides.rubyonrails.org/active_storage_overview.html#transforming-images]
-# gem "image_processing", "~> 1.2"
+gem "image_processing", "~> 1.2"
 
 gem "rails_vite" # Vite integration [https://github.com/skryukov/rails_vite]
 
 # The Rails adapter for Inertia.js [https://inertia-rails.dev]
 gem "inertia_rails", "~> 3.21"
-
-# An authentication system generator for Rails applications
-# we leave gem here to watch for security updates
-gem "authentication-zero"
 
 # Brings Rails named routes to javascript
 gem "typelizer"
@@ -66,9 +62,6 @@ end
 group :development do
   # Use console on exceptions pages [https://github.com/rails/web-console]
   gem "web-console"
-
-  # Use letter_opener to preview emails in the browser in development [https://github.com/ryanb/letter_opener]
-  gem "letter_opener"
 end
 
 group :test do

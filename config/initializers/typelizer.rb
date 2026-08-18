@@ -3,7 +3,7 @@
 Typelizer.configure do |config|
   config.verbatim_module_syntax = true
   config.routes.enabled = true
-  config.routes.output_dir = Rails.root.join("app/frontend/routes")
+  config.routes.output_dir = Rails.root.join("app/javascript/routes")
   config.routes.exclude = [ /^\/(up|rails)/ ]
-  config.output_dir = Rails.root.join("app/frontend/types/serializers")
+  config.output_dir = Rails.root.join("app/javascript/types/serializers")
 end

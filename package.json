@@ -1,21 +1,17 @@
 {
-  "name": "portfolio",
+  "name": "portfolio_new",
   "private": true,
   "type": "module",
   "scripts": {
     "check": "vue-tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
-    "lint": "eslint '*.{js,mjs,cjs,ts}' app/frontend/ --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint '*.{js,mjs,cjs,ts}' app/frontend/ --fix",
-    "format": "prettier --check 'app/frontend' '*.{js,mjs,cjs,ts}'",
-    "format:fix": "prettier --write 'app/frontend' '*.{js,mjs,cjs,ts}'"
+    "lint": "eslint '*.{js,mjs,cjs,ts}' app/javascript/ --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint '*.{js,mjs,cjs,ts}' app/javascript/ --fix",
+    "format": "prettier --check 'app/javascript' '*.{js,mjs,cjs,ts}'",
+    "format:fix": "prettier --write 'app/javascript' '*.{js,mjs,cjs,ts}'"
   },
   "dependencies": {
     "@inertiajs/vue3": "^3.6.1",
-    "@lucide/vue": "^1.32.0",
-    "@vueuse/core": "^14.4.0",
-    "reka-ui": "^2.10.3",
-    "vue": "^3.5.41",
-    "vue-sonner": "^2.0.9"
+    "vue": "^3.5.41"
   },
   "devDependencies": {
     "@inertiajs/core": "^3.6.1",

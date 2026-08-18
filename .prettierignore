@@ -1,5 +1,5 @@
 build
 coverage
-app/frontend/components/ui
-app/frontend/routes
-app/frontend/types/serializers
+app/javascript/components/ui
+app/javascript/routes
+app/javascript/types/serializers
