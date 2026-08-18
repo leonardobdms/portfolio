@@ -59,6 +59,7 @@ module Site
           label: contact.label,
           kind: contact.kind,
           href: href,
+          value: contact.display_value,
           external: contact.external?
         }
       end

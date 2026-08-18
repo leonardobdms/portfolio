@@ -15,17 +15,18 @@ skills.each_with_index do |attrs, index|
   skill.save!
 end
 
-[
-  { kind: "github", label: "GitHub", url: "" },
-  { kind: "linkedin", label: "LinkedIn", url: "" },
-  { kind: "email", label: "E-mail", url: "" }
-].each_with_index do |attrs, index|
-  Contact.find_or_create_by!(kind: attrs[:kind]) do |contact|
-    contact.label = attrs[:label]
-    contact.url = attrs[:url]
-    contact.published = false
-    contact.position = index
-  end
+contacts = YAML.safe_load_file(Rails.root.join("db/seeds/contacts.yml"))
+
+contacts.each_with_index do |attrs, index|
+  attrs = attrs.symbolize_keys
+  contact = Contact.find_or_initialize_by(kind: attrs[:kind])
+  contact.assign_attributes(
+    label: attrs[:label],
+    url: attrs[:url].to_s,
+    published: attrs.fetch(:published, false),
+    position: index
+  )
+  contact.save!
 end
 
 experience = Experience.find_or_initialize_by(role: "Desenvolvedor Full Stack", period: "Jan 2023 - Jul 2026")

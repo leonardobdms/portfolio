@@ -19,7 +19,10 @@ const portfolio = usePortfolio()
           <p class="mt-5 max-w-[40ch] text-lg leading-relaxed text-pretty text-muted">
             {{ portfolio.profile.contactText }}
           </p>
-          <div class="mt-8">
+          <p v-if="!portfolio.contacts.length" class="mt-8 max-w-[40ch] text-muted">
+            {{ $t('empty.contacts') }}
+          </p>
+          <div v-else class="mt-8">
             <SocialLinks />
           </div>
         </div>

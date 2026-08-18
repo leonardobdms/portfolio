@@ -50,7 +50,8 @@
   "empty": {
     "experience": "No experience published yet.",
     "projects": "No projects published yet.",
-    "skills": "No skills published yet."
+    "skills": "No skills published yet.",
+    "contacts": "No contacts published yet."
   },
   "footer": {
     "backToTop": "Back to top"

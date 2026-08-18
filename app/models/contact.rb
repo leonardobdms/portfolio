@@ -16,6 +16,12 @@ class Contact < ApplicationRecord
     kind == "email" && !url.start_with?("mailto:") ? "mailto:#{url}" : url
   end
 
+  def display_value
+    return if url.blank?
+
+    kind == "email" ? url.delete_prefix("mailto:") : url.sub(%r{\Ahttps?://}i, "")
+  end
+
   def external?
     kind != "email"
   end

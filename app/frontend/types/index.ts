@@ -42,6 +42,7 @@ export interface ContactItem {
   label: string
   kind: ContactKind
   href: string
+  value: string
   external: boolean
 }
 

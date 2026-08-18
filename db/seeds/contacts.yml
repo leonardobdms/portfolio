@@ -1,0 +1,12 @@
+- kind: email
+  label: E-mail
+  url: leo.bdms@gmail.com
+  published: true
+- kind: github
+  label: GitHub
+  url: https://github.com/leonardobdms
+  published: true
+- kind: linkedin
+  label: LinkedIn
+  url: "https://www.linkedin.com/in/leonardomartinsbd/"
+  published: true
