@@ -57,6 +57,7 @@ group :development, :test do
 
   # RSpec for Rails 7+
   gem "rspec-rails", "~> 8.0"
+  gem "factory_bot_rails"
 end
 
 group :development do
@@ -70,6 +71,9 @@ group :test do
   # Synchronize Capybara commands with application JavaScript and AJAX requests
   gem "capybara-lockstep"
   gem "selenium-webdriver"
+  gem "simplecov", require: false
 end
 gem "alba"
 gem "alba-inertia"
+
+gem "devise", "~> 5.0"
