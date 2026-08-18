@@ -1,0 +1,190 @@
+en:
+  layouts:
+    application:
+      fallback_title: Leonardo Martins Bueno Dias
+    auth:
+      title: Sign in | Leonardo
+  pwa:
+    name: Portfolio
+    description: Portfolio of Leonardo Martins Bueno Dias.
+  profiles:
+    already_exists: A profile already exists. Edit the current record.
+    cannot_destroy: The profile cannot be removed.
+  auth:
+    sessions:
+      title: Admin
+      subtitle: Sign in to edit the portfolio content.
+      submit: Sign in
+      remember_me: Remember me
+      forgot_password: Forgot your password?
+      back_to_site: Back to the site
+    passwords:
+      new:
+        title: Reset password
+        subtitle: Enter the admin account email to receive a reset link.
+        submit: Send instructions
+      edit:
+        title: New password
+        subtitle: Choose a new password to access the admin panel.
+        new_password: New password
+        submit: Save password
+      back_to_login: Back to sign in
+  avo:
+    resource_translations:
+      profile:
+        one: Profile
+        other: Profiles
+      skill:
+        one: Skill
+        other: Skills
+      contact:
+        one: Contact
+        other: Contacts
+      experience:
+        one: Experience
+        other: Experiences
+      project:
+        one: Project
+        other: Projects
+      admin:
+        one: Admin
+        other: Admins
+    resources:
+      profile:
+        description: Main data displayed on the site. There is only one profile.
+        panels:
+          identity: Identity
+          about: About
+          contact_seo: Contact and SEO
+        help:
+          short_name: Used in the navigation.
+          highlights: Hero highlights, in display order.
+          about: Separate paragraphs with a blank line.
+          site_url: Public site URL, if any.
+      skill:
+        description: Technologies shown in the skills section.
+        help:
+          level: Featured appears in the section. Core appears in the strip. Catalog is only used for icons in lists.
+          icon: Simple Icons slug, such as rubyonrails, vuedotjs, or postgresql.
+          position: Lower numbers appear first.
+      contact:
+        description: GitHub, LinkedIn, email, and other contact links.
+        help:
+          url: Full URL, or the email without mailto:. Empty hides the link on the site.
+          published: Only appears on the site when published and with a URL.
+      experience:
+        description: Professional experiences in the timeline.
+        help:
+          company: Optional. Leave blank if you do not want to show a company.
+          url: Company website. Empty hides the link on the portfolio.
+      project:
+        description: Projects displayed in the portfolio.
+        icons:
+          landmark: Building
+          hammer: Hammer
+          store: Store
+          building_2: Property
+          truck: Transport
+          newspaper: Content
+          shield_check: Authentication
+          puzzle: Plugin
+          gem: Gem
+        help:
+          slug: Generated from the name when left blank.
+          description: Separate paragraphs with a blank line.
+          role: Technical role on the project.
+          url: Empty hides the View project button.
+          github: Empty hides the GitHub button.
+          featured: Wider card in the grid.
+      admin:
+        description: Accounts with access to the admin panel.
+        help:
+          password: Leave blank to keep the current password when editing.
+  activerecord:
+    models:
+      profile:
+        one: Profile
+        other: Profiles
+      skill:
+        one: Skill
+        other: Skills
+      contact:
+        one: Contact
+        other: Contacts
+      experience:
+        one: Experience
+        other: Experiences
+      project:
+        one: Project
+        other: Projects
+      admin:
+        one: Admin
+        other: Admins
+    attributes:
+      profile:
+        name: Name
+        short_name: Short name
+        headline: Headline
+        intro: Intro
+        about: About
+        highlights: Highlights
+        contact_title: Contact title
+        contact_text: Contact text
+        seo_description: SEO description
+        site_url: Site URL
+        copyright_year: Copyright year
+      skill:
+        name: Name
+        icon: Icon
+        level: Level
+        position: Order
+      contact:
+        label: Label
+        kind: Type
+        url: URL
+        published: Published
+        position: Order
+      experience:
+        role: Role
+        company: Company
+        url: URL
+        period: Period
+        description: Description
+        technologies: Technologies
+        position: Order
+      project:
+        name: Name
+        slug: Slug
+        summary: Summary
+        description: Description
+        role: Role
+        icon: Icon
+        url: URL
+        github: GitHub
+        technologies: Technologies
+        highlights: Highlights
+        featured: Featured
+        position: Order
+      admin:
+        email: Email
+        password: Password
+        password_confirmation: Confirm password
+        remember_me: Remember me
+    errors:
+      models:
+        profile:
+          attributes:
+            base:
+              already_exists: A profile already exists. Edit the current record.
+    enums:
+      skill:
+        level:
+          featured: Featured
+          core: Core
+          catalog: Catalog
+      contact:
+        kind:
+          github: GitHub
+          linkedin: LinkedIn
+          email: Email
+          other: Other

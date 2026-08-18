@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>" class="dark">
+  <head>
+    <meta charset="UTF-8">
+    <title data-inertia><%= content_for(:title) || t("layouts.application.fallback_title") %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="color-scheme" content="dark light">
+    <meta name="theme-color" content="#111214">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= yield :head %>
+    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+    <script>
+      (function () {
+        try {
+          var theme = localStorage.getItem('theme')
+          var isDark = theme ? theme === 'dark' : true
+          document.documentElement.classList.toggle('dark', isDark)
+          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
+        } catch (e) {
+          document.documentElement.classList.add('dark')
+        }
+      })()
+    </script>
+    <%= vite_client_tag %>
+    <%= vite_typescript_tag 'inertia' %>
+    <%= inertia_ssr_head %>
+  </head>
+  <body>
+    <%= yield %>
+  </body>
+</html>
