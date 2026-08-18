@@ -10,6 +10,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev
+
       - name: Checkout code
         uses: actions/checkout@v7
 
@@ -54,6 +57,9 @@ jobs:
     env:
       RUBOCOP_CACHE_ROOT: tmp/rubocop
     steps:
+      - name: Install packages
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y libpq-dev
+
       - name: Checkout code
         uses: actions/checkout@v7
 
@@ -78,9 +84,23 @@ jobs:
   test:
     runs-on: ubuntu-latest
 
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports:
+          - 5432:5432
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
     steps:
       - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git node-gyp pkg-config python-is-python3 google-chrome-stable
+        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y build-essential git libpq-dev node-gyp pkg-config python-is-python3 google-chrome-stable
 
       - name: Checkout code
         uses: actions/checkout@v7
@@ -102,6 +122,7 @@ jobs:
       - name: Run tests
         env:
           RAILS_ENV: test
+          DATABASE_URL: postgres://postgres:postgres@localhost:5432/portfolio_test
         run: bin/rails db:test:prepare spec
 
       - name: Keep screenshots from failed system tests
