@@ -1,18 +1,20 @@
-import path from 'node:path'
-import { fileURLToPath } from 'node:url'
-import tailwindcss from '@tailwindcss/vite'
-import inertia from '@inertiajs/vite'
-import vue from '@vitejs/plugin-vue'
-import { defineConfig } from 'vite'
-import RubyPlugin from 'vite-plugin-ruby'
+import inertia from "@inertiajs/vite"
+import tailwindcss from "@tailwindcss/vite"
+import vue from "@vitejs/plugin-vue"
+import rails from "rails-vite-plugin"
+import { defineConfig } from "vite"
+import vueDevTools from "vite-plugin-vue-devtools"
 
-const dir = fileURLToPath(new URL('.', import.meta.url))
-
-export default defineConfig({
-  plugins: [tailwindcss(), RubyPlugin(), inertia(), vue()],
-  resolve: {
-    alias: {
-      '@': path.resolve(dir, 'app/frontend'),
-    },
+export default defineConfig(({ command }) => ({
+  ssr: {
+    // Prebuild ssr.js so we can drop node_modules from the container.
+    noExternal: command === "build" ? true : undefined,
   },
-})
+  plugins: [
+    vue(),
+    vueDevTools({ appendTo: "inertia.ts" }),
+    tailwindcss(),
+    rails(),
+    inertia({ ssr: "app/javascript/entrypoints/inertia.ts" }),
+  ],
+}))

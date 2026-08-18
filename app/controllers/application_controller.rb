@@ -1,21 +1,31 @@
 # frozen_string_literal: true
 
 class ApplicationController < ActionController::Base
-  layout "application"
+  # Only allow modern browsers supporting webp images, web push, badges, import maps, CSS nesting, and CSS :has.
+  allow_browser versions: :modern
 
-  use_inertia_instance_props
+  before_action :set_current_request_details
+  before_action :authenticate
 
-  inertia_share locale: -> { I18n.locale.to_s }
+  private
 
-  def after_sign_in_path_for(resource)
-    return Avo.configuration.root_path if resource.is_a?(Admin)
-
-    super
+  def authenticate
+    redirect_to sign_in_path unless perform_authentication
   end
 
-  def after_sign_out_path_for(resource_or_scope)
-    return new_admin_session_path if resource_or_scope == :admin
+  def require_no_authentication
+    return unless perform_authentication
 
-    super
+    flash[:notice] = "You are already signed in"
+    redirect_to root_path
+  end
+
+  def perform_authentication
+    Current.session ||= Session.find_by_id(cookies.signed[:session_token])
+  end
+
+  def set_current_request_details
+    Current.user_agent = request.user_agent
+    Current.ip_address = request.ip
   end
 end

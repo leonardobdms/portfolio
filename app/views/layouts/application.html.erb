@@ -1,31 +1,37 @@
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>" class="dark">
+<html>
   <head>
-    <meta charset="UTF-8">
-    <title data-inertia><%= content_for(:title) || t("layouts.application.fallback_title") %></title>
+    <title data-inertia><%= content_for(:title) || "Portfolio" %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
-    <meta name="color-scheme" content="dark light">
-    <meta name="theme-color" content="#111214">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="application-name" content="Portfolio">
+    <meta name="mobile-web-app-capable" content="yes">
+    <%= capybara_lockstep if defined?(Capybara::Lockstep) %>
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
+
     <%= yield :head %>
-    <link rel="icon" href="/favicon.svg" type="image/svg+xml">
+
+    <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
+    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <link rel="icon" href="/icon.png" type="image/png">
+    <link rel="icon" href="/icon.svg" type="image/svg+xml">
+    <link rel="apple-touch-icon" href="/icon.png">
+
     <script>
-      (function () {
-        try {
-          var theme = localStorage.getItem('theme')
-          var isDark = theme ? theme === 'dark' : true
-          document.documentElement.classList.toggle('dark', isDark)
-          document.documentElement.style.colorScheme = isDark ? 'dark' : 'light'
-        } catch (e) {
-          document.documentElement.classList.add('dark')
-        }
-      })()
+      <%# Enable dark mode based on localStorage or system preference. Inline to avoid FOUC. %>
+      document.documentElement.classList.toggle(
+        "dark",
+        localStorage.appearance === "dark" ||
+          (!("appearance" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches),
+      );
     </script>
-    <%= vite_client_tag %>
-    <%= vite_typescript_tag 'inertia' %>
+
+    <%= vite_tags "application.css", "inertia.ts" %>
     <%= inertia_ssr_head %>
   </head>
+
   <body>
     <%= yield %>
   </body>
