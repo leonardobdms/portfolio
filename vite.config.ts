@@ -14,7 +14,7 @@ export default defineConfig(({ command }) => ({
     vue(),
     vueDevTools({ appendTo: "inertia.ts" }),
     tailwindcss(),
-    rails(),
-    inertia({ ssr: "app/javascript/entrypoints/inertia.ts" }),
+    rails({ sourceDir: "app/frontend" }),
+    inertia({ ssr: "app/frontend/entrypoints/inertia.ts" }),
   ],
 }))

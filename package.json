@@ -4,10 +4,10 @@
   "type": "module",
   "scripts": {
     "check": "vue-tsc -p tsconfig.app.json && tsc -p tsconfig.node.json",
-    "lint": "eslint '*.{js,mjs,cjs,ts}' app/javascript/ --report-unused-disable-directives --max-warnings 0",
-    "lint:fix": "eslint '*.{js,mjs,cjs,ts}' app/javascript/ --fix",
-    "format": "prettier --check 'app/javascript' '*.{js,mjs,cjs,ts}'",
-    "format:fix": "prettier --write 'app/javascript' '*.{js,mjs,cjs,ts}'"
+    "lint": "eslint '*.{js,mjs,cjs,ts}' app/frontend/ --report-unused-disable-directives --max-warnings 0",
+    "lint:fix": "eslint '*.{js,mjs,cjs,ts}' app/frontend/ --fix",
+    "format": "prettier --check 'app/frontend' '*.{js,mjs,cjs,ts}'",
+    "format:fix": "prettier --write 'app/frontend' '*.{js,mjs,cjs,ts}'"
   },
   "dependencies": {
     "@inertiajs/vue3": "^3.6.1",

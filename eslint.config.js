@@ -9,13 +9,13 @@ import pluginVue from "eslint-plugin-vue"
 export default defineConfigWithVueTs(
   {
     name: "app/files-to-lint",
-    files: ["app/javascript/**/*.{ts,mts,tsx,vue}"],
+    files: ["app/frontend/**/*.{ts,mts,tsx,vue}"],
   },
   {
     ignores: [
-      "app/javascript/components/ui/**",
-      "app/javascript/routes/**",
-      "app/javascript/types/serializers/**",
+      "app/frontend/components/ui/**",
+      "app/frontend/routes/**",
+      "app/frontend/types/serializers/**",
     ],
   },
 
