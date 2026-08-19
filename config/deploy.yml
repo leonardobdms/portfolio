@@ -7,10 +7,10 @@ image: portfolio
 # Deploy to these servers.
 servers:
   web:
-    - 192.168.0.1
+    - 192.168.15.7
   # job:
   #   hosts:
-  #     - 192.168.0.1
+  #     - 192.168.15.7
   #   cmd: bin/jobs
 
 # Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
@@ -20,41 +20,36 @@ servers:
 #
 # Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
 #
+# Let's Encrypt needs a public DNS name pointing at the VM. For this LAN IP, leave SSL off
+# and open the app at http://192.168.15.7
+#
 # proxy:
 #   ssl: true
 #   host: app.example.com
 
-# Where you keep your container images.
+# Local registry on the machine that runs `bin/kamal`. No Docker Hub / GHCR login needed.
+# Kamal starts it and SSH-tunnels it to the VM so the VM can pull the image.
 registry:
-  # Alternatives: hub.docker.com / registry.digitalocean.com / ghcr.io / ...
   server: localhost:5555
-
-  # Needed for authenticated registries.
-  # username: your-user
-
-  # Always use an access token rather than real password when possible.
-  # password:
-  #   - KAMAL_REGISTRY_PASSWORD
 
 # Inject ENV variables into containers (secrets come from .kamal/secrets).
 env:
   secret:
     - RAILS_MASTER_KEY
+    - PORTFOLIO_DATABASE_PASSWORD
   clear:
     # Run the Solid Queue Supervisor inside the web server's Puma process to do jobs.
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
+
+    # Kamal names the accessory container {service}-{accessory} on the kamal Docker network.
+    DB_HOST: portfolio-db
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
 
     # Set number of cores available to the application on each server (default: 1).
     # WEB_CONCURRENCY: 2
-
-    # Match this to any external database server to configure Active Record correctly
-    # Use portfolio-db for a db accessory server on same machine via local kamal docker network.
-    # DB_HOST: portfolio-db
-    # Also add PORTFOLIO_DATABASE_PASSWORD (and POSTGRES_PASSWORD for the accessory) to env/secret.
 
     # Log everything from Rails
     # RAILS_LOG_LEVEL: debug
@@ -82,43 +77,26 @@ builder:
   arch: amd64
   cache:
     type: registry
-    image: your-user/portfolio-build-cache
+    image: portfolio-build-cache
     options: mode=max
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
-  #
-  # # Pass arguments and secrets to the Docker build process
-  # args:
-  #   RUBY_VERSION: ruby-4.0.4
-  # secrets:
-  #   - GITHUB_TOKEN
-  #   - RAILS_MASTER_KEY
 
-# Use a different ssh user than root
+# Default SSH user is root. Uncomment if the VM uses another user with Docker access.
 # ssh:
-#   user: app
+#   user: ubuntu
 
-# Use accessory services (secrets come from .kamal/secrets).
-# accessories:
-#   db:
-#     image: postgres:16
-#     host: 192.168.0.1
-#     # Change to 5432 to expose port to the world instead of just local network.
-#     port: "127.0.0.1:5432:5432"
-#     env:
-#       clear:
-#         POSTGRES_USER: portfolio
-#         POSTGRES_DB: portfolio_production
-#       secret:
-#         - POSTGRES_PASSWORD
-#     files:
-#       - db/production.sql:/docker-entrypoint-initdb.d/setup.sql
-#     directories:
-#       - data:/var/lib/postgresql/data
-#   redis:
-#     image: valkey/valkey:8
-#     host: 192.168.0.2
-#     port: 6379
-#     directories:
-#       - data:/data
+# Postgres on the same VM. Not exposed to the LAN — only the Kamal Docker network.
+accessories:
+  db:
+    image: postgres:16
+    host: 192.168.15.7
+    env:
+      clear:
+        POSTGRES_USER: portfolio
+        POSTGRES_DB: portfolio_production
+      secret:
+        - POSTGRES_PASSWORD
+    directories:
+      - data:/var/lib/postgresql/data
