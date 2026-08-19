@@ -11,7 +11,11 @@
   },
   "dependencies": {
     "@inertiajs/vue3": "^3.6.1",
-    "vue": "^3.5.41"
+    "@lucide/vue": "^1.32.0",
+    "@vueuse/core": "^14.4.0",
+    "reka-ui": "^2.10.3",
+    "vue": "^3.5.41",
+    "vue-i18n": "^11.4.8"
   },
   "devDependencies": {
     "@inertiajs/core": "^3.6.1",

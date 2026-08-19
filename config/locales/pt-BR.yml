@@ -1,0 +1,131 @@
+pt-BR:
+  app:
+    name: Portfolio
+    title: Portfolio
+  admin:
+    sidebar:
+      portfolio: Portfolio
+      career: Carreira
+      work: Trabalho
+      profile: Perfil
+      social_links: Redes sociais
+      experiences: Experiências
+      education: Formação
+      certifications: Certificações
+      projects: Projetos
+      skills: Habilidades
+      avo_status: Status do Avo
+    locale:
+      label: Idioma
+      en: Inglês
+      pt_br: Português
+  activerecord:
+    models:
+      admin:
+        one: Administrador
+        other: Administradores
+      profile:
+        one: Perfil
+        other: Perfis
+      project:
+        one: Projeto
+        other: Projetos
+      skill:
+        one: Habilidade
+        other: Habilidades
+      experience:
+        one: Experiência
+        other: Experiências
+      education:
+        one: Formação
+        other: Formações
+      certification:
+        one: Certificação
+        other: Certificações
+      social_link:
+        one: Rede social
+        other: Redes sociais
+      project_skill:
+        one: Habilidade do projeto
+        other: Habilidades do projeto
+    attributes:
+      admin:
+        email: E-mail
+        password: Senha
+        remember_me: Permanecer conectado
+      profile:
+        name: Nome
+        headline: Título
+        bio: Biografia
+        location: Localização
+        email: E-mail
+        phone: Telefone
+        github_url: URL do GitHub
+        linkedin_url: URL do LinkedIn
+        website_url: URL do site
+        avatar_url: URL do avatar
+        resume_url: URL do currículo
+        available_for_work: Disponível para trabalho
+      project:
+        name: Nome
+        slug: Slug
+        short_description: Descrição curta
+        description: Descrição
+        image_url: URL da imagem
+        github_url: URL do GitHub
+        demo_url: URL da demo
+        featured: Destaque
+        position: Posição
+        start_date: Data de início
+        end_date: Data de término
+      skill:
+        name: Nome
+        slug: Slug
+        category: Categoria
+        icon: Ícone
+        level: Nível
+        description: Descrição
+        position: Posição
+      experience:
+        role: Cargo
+        company: Empresa
+        employment_type: Tipo de contrato
+        location: Localização
+        description: Descrição
+        start_date: Data de início
+        end_date: Data de término
+        current: Atual
+        position: Posição
+      education:
+        course: Curso
+        institution: Instituição
+        degree: Grau
+        description: Descrição
+        start_date: Data de início
+        end_date: Data de término
+        current: Em andamento
+        position: Posição
+      certification:
+        name: Nome
+        issuer: Emissor
+        description: Descrição
+        credential_url: URL da credencial
+        credential_id: ID da credencial
+        issued_at: Emitido em
+        expires_at: Expira em
+        position: Posição
+      social_link:
+        platform: Plataforma
+        url: URL
+        username: Usuário
+        icon: Ícone
+        position: Posição
+      project_skill:
+        project: Projeto
+        skill: Habilidade
+    errors:
+      models:
+        skill:
+          attributes:
+            icon:
+              invalid: "deve ser um identificador da tecnologia (ex: ruby, rails, vue). Não use SVG, PNG ou URLs."

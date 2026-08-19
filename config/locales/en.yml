@@ -1,31 +1,131 @@
-# Files in the config/locales directory are used for internationalization and
-# are automatically loaded by Rails. If you want to use locales other than
-# English, add the necessary files in this directory.
-#
-# To use the locales, use `I18n.t`:
-#
-#     I18n.t "hello"
-#
-# In views, this is aliased to just `t`:
-#
-#     <%= t("hello") %>
-#
-# To use a different locale, set it with `I18n.locale`:
-#
-#     I18n.locale = :es
-#
-# This would use the information in config/locales/es.yml.
-#
-# To learn more about the API, please read the Rails Internationalization guide
-# at https://guides.rubyonrails.org/i18n.html.
-#
-# Be aware that YAML interprets the following case-insensitive strings as
-# booleans: `true`, `false`, `on`, `off`, `yes`, `no`. Therefore, these strings
-# must be quoted to be interpreted as strings. For example:
-#
-#     en:
-#       "yes": yup
-#       enabled: "ON"
-
 en:
-  hello: "Hello world"
+  app:
+    name: Portfolio
+    title: Portfolio
+  admin:
+    sidebar:
+      portfolio: Portfolio
+      career: Career
+      work: Work
+      profile: Profile
+      social_links: Social links
+      experiences: Experiences
+      education: Education
+      certifications: Certifications
+      projects: Projects
+      skills: Skills
+      avo_status: Avo Status
+    locale:
+      label: Language
+      en: English
+      pt_br: Portuguese
+  activerecord:
+    models:
+      admin:
+        one: Administrator
+        other: Administrators
+      profile:
+        one: Profile
+        other: Profiles
+      project:
+        one: Project
+        other: Projects
+      skill:
+        one: Skill
+        other: Skills
+      experience:
+        one: Experience
+        other: Experiences
+      education:
+        one: Education
+        other: Education
+      certification:
+        one: Certification
+        other: Certifications
+      social_link:
+        one: Social link
+        other: Social links
+      project_skill:
+        one: Project skill
+        other: Project skills
+    attributes:
+      admin:
+        email: Email
+        password: Password
+        remember_me: Stay signed in
+      profile:
+        name: Name
+        headline: Headline
+        bio: Bio
+        location: Location
+        email: Email
+        phone: Phone
+        github_url: GitHub URL
+        linkedin_url: LinkedIn URL
+        website_url: Website URL
+        avatar_url: Avatar URL
+        resume_url: Resume URL
+        available_for_work: Available for work
+      project:
+        name: Name
+        slug: Slug
+        short_description: Short description
+        description: Description
+        image_url: Image URL
+        github_url: GitHub URL
+        demo_url: Demo URL
+        featured: Featured
+        position: Position
+        start_date: Start date
+        end_date: End date
+      skill:
+        name: Name
+        slug: Slug
+        category: Category
+        icon: Icon
+        level: Level
+        description: Description
+        position: Position
+      experience:
+        role: Role
+        company: Company
+        employment_type: Employment type
+        location: Location
+        description: Description
+        start_date: Start date
+        end_date: End date
+        current: Current
+        position: Position
+      education:
+        course: Course
+        institution: Institution
+        degree: Degree
+        description: Description
+        start_date: Start date
+        end_date: End date
+        current: Current
+        position: Position
+      certification:
+        name: Name
+        issuer: Issuer
+        description: Description
+        credential_url: Credential URL
+        credential_id: Credential ID
+        issued_at: Issued at
+        expires_at: Expires at
+        position: Position
+      social_link:
+        platform: Platform
+        url: URL
+        username: Username
+        icon: Icon
+        position: Position
+      project_skill:
+        project: Project
+        skill: Skill
+    errors:
+      models:
+        skill:
+          attributes:
+            icon:
+              invalid: "must be a technology identifier (e.g. ruby, rails, vue). Do not use SVG, PNG, or URLs."

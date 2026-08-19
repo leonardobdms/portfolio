@@ -1,0 +1,21 @@
+/*
+  Avo surfaces follow the project identity.
+  Map Avo semantic tokens to the brand neutral scale from
+  config/initializers/avo.rb (same hex as design_tokens.css).
+  Do not reference --ds-* here: this file is served as-is by Propshaft
+  and does not receive the Vite-bundled token sheet.
+*/
+.dark {
+  --color-background: var(--color-avo-neutral-900);
+  --color-sidebar-background: var(--color-avo-neutral-900);
+  --color-navbar-background: var(--color-avo-neutral-900);
+  --color-primary: var(--color-avo-neutral-800);
+  --color-secondary: var(--color-avo-neutral-600);
+  --color-main-content-background: var(--color-avo-neutral-800);
+  --color-main-content-border: var(--color-avo-neutral-500);
+  --color-foreground: var(--color-avo-neutral-25);
+  --color-content: var(--color-avo-neutral-25);
+  --color-content-secondary: var(--color-avo-neutral-300);
+  --border-color: var(--color-avo-neutral-500);
+  color: var(--color-avo-neutral-25);
+}

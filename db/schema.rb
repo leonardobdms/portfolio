@@ -69,6 +69,7 @@ ActiveRecord::Schema[8.1].define(version: 2026_08_18_190008) do
     t.string "role", null: false
     t.date "start_date", null: false
     t.datetime "updated_at", null: false
+    t.string "website_url", default: "", null: false
     t.index ["profile_id", "position"], name: "index_experiences_on_profile_id_and_position"
   end
 

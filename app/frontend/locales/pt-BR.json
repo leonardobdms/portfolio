@@ -1,0 +1,48 @@
+{
+  "locale": {
+    "label": "Idioma",
+    "en": "EN",
+    "ptBR": "PT"
+  },
+  "home": {
+    "title": "Início",
+    "mainNav": "Principal",
+    "openMenu": "Abrir menu",
+    "closeMenu": "Fechar menu",
+    "cta": "Vamos conversar",
+    "viewWork": "Ver projetos",
+    "available": "Disponível para novas oportunidades",
+    "skillsTitle": "Skills",
+    "experienceTitle": "Experiência",
+    "projectsTitle": "Projetos em destaque",
+    "aboutTitle": "Sobre",
+    "educationTitle": "Formação",
+    "contactTitle": "Vamos conversar?",
+    "contactBodyAvailable": "Estou disponível para novas oportunidades e projetos.",
+    "contactBody": "Quer conversar sobre um projeto? Fale comigo por e-mail.",
+    "present": "em andamento",
+    "expectedCompletion": "Previsão de conclusão: {date}",
+    "since": "Desde {year}",
+    "email": "E-mail",
+    "phone": "Telefone",
+    "nav": {
+      "skills": "Skills",
+      "experience": "Experiência",
+      "projects": "Projetos",
+      "about": "Sobre",
+      "contact": "Contato"
+    }
+  },
+  "auth": {
+    "title": "Entrar",
+    "heading": "Entrar",
+    "subtitle": "Acesso de administrador ao painel do portfólio.",
+    "email": "E-mail",
+    "password": "Senha",
+    "remember_me": "Permanecer conectado",
+    "submit": "Entrar",
+    "submitting": "Entrando...",
+    "back_to_site": "Voltar ao site",
+    "login_visual_alt": "Mesa de estúdio escura com um laptop à noite"
+  }
+}

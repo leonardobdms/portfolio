@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 # Bundle edge Rails instead: gem "rails", github: "rails/rails", branch: "main"
 gem "rails", "~> 8.1.3", ">= 8.1.3.1"
+gem "rails-i18n", "~> 8.0"
 # The modern asset pipeline for Rails [https://github.com/rails/propshaft]
 gem "propshaft"
 # Use PostgreSQL as the database for Active Record
@@ -77,3 +78,6 @@ gem "alba"
 gem "alba-inertia"
 
 gem "devise", "~> 5.0"
+gem "avo", ">= 4.0.0"
+
+gem "dotenv", "~> 3.2"

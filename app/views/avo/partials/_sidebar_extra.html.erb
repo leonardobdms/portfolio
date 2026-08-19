@@ -1,0 +1,16 @@
+<div class="sidebar-section">
+  <div class="sidebar-section__header">
+    <span class="sidebar-section__title"><%= t("admin.locale.label") %></span>
+  </div>
+  <div class="flex items-center gap-2 px-3 pb-3 text-sm">
+    <%= link_to t("admin.locale.en"),
+          main_app.switch_locale_path(locale: "en"),
+          class: class_names("hover:underline", "font-semibold": I18n.locale.to_s == "en"),
+          aria: { current: ("true" if I18n.locale.to_s == "en") } %>
+    <span aria-hidden="true">/</span>
+    <%= link_to t("admin.locale.pt_br"),
+          main_app.switch_locale_path(locale: "pt-BR"),
+          class: class_names("hover:underline", "font-semibold": I18n.locale.to_s == "pt-BR"),
+          aria: { current: ("true" if I18n.locale.to_s == "pt-BR") } %>
+  </div>
+</div>

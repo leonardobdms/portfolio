@@ -1,5 +1,12 @@
 Rails.application.routes.draw do
-  devise_for :admins
+  devise_for :admins, controllers: { sessions: "admins/sessions" }
+
+  authenticate :admin do
+    mount_avo
+  end
+
+  get "locale", to: "locales#update", as: :switch_locale
+
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 

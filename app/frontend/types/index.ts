@@ -3,5 +3,8 @@ export type FlashData = {
   alert?: string
 }
 
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-export interface SharedProps {}
+export interface SharedProps {
+  locale: string
+}
+
+export type * from "./serializers"

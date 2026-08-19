@@ -1,0 +1,47 @@
+---
+description: Official visual identity and color tokens for the portfolio and Avo admin.
+alwaysApply: true
+---
+
+# Design System
+
+Before creating any visual component, check existing design tokens. Do not use isolated hex values when a token exists.
+
+## Palette
+
+Hex values are defined only in `app/assets/stylesheets/design_tokens.css`.
+
+| Token | Hex | Tailwind |
+|---|---|---|
+| primary | `#6366F1` | `bg-primary` `text-primary` |
+| primary-light | `#818CF8` | `bg-primary-light` |
+| primary-dark | `#4F46E5` | `bg-primary-dark` |
+| secondary | `#8B5CF6` | `bg-secondary` |
+| accent | `#06B6D4` | `bg-accent` (sparingly) |
+| background | `#0B1120` | `bg-background` |
+| surface | `#111827` | `bg-surface` |
+| surface-light | `#1E293B` | `bg-surface-light` |
+| text | `#F8FAFC` | `text-text` |
+| text-muted | `#94A3B8` | `text-text-muted` |
+| border | `#334155` | `border-border` |
+| success | `#22C55E` | `text-success` |
+| warning | `#F59E0B` | `text-warning` |
+| danger | `#EF4444` | `text-danger` |
+
+```html
+<!-- BAD -->
+<div class="bg-[#0B1120] text-[#F8FAFC]">
+
+<!-- GOOD -->
+<div class="bg-background text-text">
+```
+
+Accent is for small highlights only. Do not invent new colors.
+
+## UI
+
+Dark, minimal, professional, technological. No gamer look, neon, heavy gradients, or excess shadows.
+
+Keep spacing, border-radius, and typography consistent. Prefer readability, contrast, and a clear hierarchy.
+
+Avo must use this same identity (`config.appearance` + `avo-overrides.css`). Do not create a separate admin theme.

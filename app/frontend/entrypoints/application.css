@@ -1,4 +1,53 @@
 @import "tailwindcss";
+@import "tw-animate-css";
+@import "../../assets/stylesheets/design_tokens.css";
 
 @plugin "@tailwindcss/typography";
 @plugin "@tailwindcss/forms";
+
+@layer base {
+  html {
+    background-color: var(--ds-background);
+    color: var(--ds-text);
+    scroll-behavior: smooth;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    html {
+      scroll-behavior: auto;
+    }
+  }
+}
+
+@theme inline {
+  --color-primary: var(--ds-primary);
+  --color-primary-light: var(--ds-primary-light);
+  --color-primary-dark: var(--ds-primary-dark);
+  --color-primary-foreground: var(--ds-text);
+  --color-secondary: var(--ds-secondary);
+  --color-secondary-foreground: var(--ds-text);
+  --color-accent: var(--ds-accent);
+  --color-accent-foreground: var(--ds-text);
+  --color-background: var(--ds-background);
+  --color-foreground: var(--ds-text);
+  --color-surface: var(--ds-surface);
+  --color-surface-light: var(--ds-surface-light);
+  --color-card: var(--ds-surface);
+  --color-card-foreground: var(--ds-text);
+  --color-popover: var(--ds-surface);
+  --color-popover-foreground: var(--ds-text);
+  --color-muted: var(--ds-surface-light);
+  --color-muted-foreground: var(--ds-text-muted);
+  --color-text: var(--ds-text);
+  --color-text-muted: var(--ds-text-muted);
+  --color-border: var(--ds-border);
+  --color-input: var(--ds-border);
+  --color-ring: var(--ds-primary);
+  --color-success: var(--ds-success);
+  --color-warning: var(--ds-warning);
+  --color-danger: var(--ds-danger);
+  --color-destructive: var(--ds-danger);
+  --font-sans:
+    "Segoe UI", ui-sans-serif, system-ui, sans-serif, "Apple Color Emoji",
+    "Segoe UI Emoji";
+}

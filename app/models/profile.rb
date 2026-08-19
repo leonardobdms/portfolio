@@ -9,4 +9,8 @@ class Profile < ApplicationRecord
   has_many :social_links, -> { order(:position, :id) }, dependent: :destroy, inverse_of: :profile
 
   validates :name, presence: true
+
+  def self.current
+    first
+  end
 end

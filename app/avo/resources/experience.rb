@@ -1,0 +1,23 @@
+# frozen_string_literal: true
+
+class Avo::Resources::Experience < Avo::BaseResource
+  self.title = :role
+  self.icon = "tabler/outline/briefcase"
+  self.includes = [ :profile ]
+  self.default_sort_column = :position
+  self.default_sort_direction = :asc
+
+  def fields
+    field :id, as: :id, only_on: :show
+    field :role, as: :text, sortable: true, link_to_record: true
+    field :company, as: :text, sortable: true
+    field :employment_type, as: :text
+    field :location, as: :text, hide_on: :index
+    field :description, as: :textarea, hide_on: :index
+    field :start_date, as: :date, sortable: true
+    field :end_date, as: :date
+    field :current, as: :boolean
+    field :position, as: :number, sortable: true
+    field :profile, as: :belongs_to, hide_on: :index, default: -> { Profile.order(:id).first }
+  end
+end

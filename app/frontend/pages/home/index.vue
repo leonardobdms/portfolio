@@ -1,35 +1,53 @@
 <template>
-  <Head title="Welcome" />
-  <div class="flex min-h-screen items-center justify-center bg-gray-50">
-    <div class="mx-auto max-w-md space-y-6 p-8 text-center">
-      <h1 class="text-4xl font-bold text-gray-900">Welcome to Inertia Rails</h1>
-      <p class="text-lg text-gray-600">
-        Your app is ready. Start building something amazing.
-      </p>
-      <div class="space-y-2 text-sm text-gray-500">
-        <p>Rails {{ rails_version }} &middot; Ruby {{ ruby_version }}</p>
-        <p>Inertia Rails {{ inertia_rails_version }}</p>
-      </div>
-      <div class="pt-4">
-        <a
-          href="https://inertia-rails.dev"
-          class="inline-flex items-center rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-white hover:bg-gray-800"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Documentation
-        </a>
-      </div>
-    </div>
+  <Head :title="profile.name" />
+
+  <div
+    id="top"
+    class="bg-background text-text min-h-[100dvh] font-sans antialiased"
+  >
+    <SiteHeader :profile="profile" />
+
+    <main>
+      <HeroSection :profile="profile" />
+      <SkillsSection
+        v-if="profile.skills.length > 0"
+        :skills="profile.skills"
+      />
+      <ExperienceSection
+        v-if="profile.experiences.length > 0"
+        :experiences="profile.experiences"
+      />
+      <FeaturedProjectsSection
+        v-if="featured.length > 0"
+        :projects="featured"
+      />
+      <AboutSection v-if="profile.bio" :profile="profile" />
+      <EducationSection
+        v-if="profile.educations.length > 0"
+        :educations="profile.educations"
+      />
+      <ContactSection v-if="showContact" :profile="profile" />
+    </main>
   </div>
 </template>
 
 <script setup lang="ts">
 import { Head } from "@inertiajs/vue3"
+import { computed } from "vue"
 
-defineProps<{
-  rails_version: string
-  ruby_version: string
-  inertia_rails_version: string
-}>()
+import AboutSection from "@/components/home/AboutSection.vue"
+import ContactSection from "@/components/home/ContactSection.vue"
+import EducationSection from "@/components/home/EducationSection.vue"
+import ExperienceSection from "@/components/home/ExperienceSection.vue"
+import FeaturedProjectsSection from "@/components/home/FeaturedProjectsSection.vue"
+import HeroSection from "@/components/home/HeroSection.vue"
+import SiteHeader from "@/components/home/SiteHeader.vue"
+import SkillsSection from "@/components/home/SkillsSection.vue"
+import { featuredProjects, hasContact } from "@/lib/home"
+import type { HomeIndex } from "@/types/serializers/HomeIndex"
+
+const props = defineProps<HomeIndex>()
+
+const featured = computed(() => featuredProjects(props.profile.projects))
+const showContact = computed(() => hasContact(props.profile))
 </script>

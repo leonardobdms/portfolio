@@ -1,0 +1,48 @@
+{
+  "locale": {
+    "label": "Language",
+    "en": "EN",
+    "ptBR": "PT"
+  },
+  "home": {
+    "title": "Home",
+    "mainNav": "Primary",
+    "openMenu": "Open menu",
+    "closeMenu": "Close menu",
+    "cta": "Let's talk",
+    "viewWork": "View work",
+    "available": "Available for new opportunities",
+    "skillsTitle": "Skills",
+    "experienceTitle": "Experience",
+    "projectsTitle": "Featured projects",
+    "aboutTitle": "About",
+    "educationTitle": "Education",
+    "contactTitle": "Let's talk",
+    "contactBodyAvailable": "I am available for new opportunities and projects.",
+    "contactBody": "Want to talk about a project? Reach me by email.",
+    "present": "Present",
+    "expectedCompletion": "Expected completion: {date}",
+    "since": "Since {year}",
+    "email": "Email",
+    "phone": "Phone",
+    "nav": {
+      "skills": "Skills",
+      "experience": "Experience",
+      "projects": "Projects",
+      "about": "About",
+      "contact": "Contact"
+    }
+  },
+  "auth": {
+    "title": "Sign in",
+    "heading": "Sign in",
+    "subtitle": "Administrator access to the portfolio panel.",
+    "email": "Email",
+    "password": "Password",
+    "remember_me": "Stay signed in",
+    "submit": "Sign in",
+    "submitting": "Signing in...",
+    "back_to_site": "Back to site",
+    "login_visual_alt": "Dark studio desk with a laptop at night"
+  }
+}

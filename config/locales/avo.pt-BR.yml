@@ -1,0 +1,177 @@
+pt-BR:
+  avo:
+    resource_translations:
+      profile:
+        one: Perfil
+        other: Perfis
+      project:
+        one: Projeto
+        other: Projetos
+      skill:
+        one: Habilidade
+        other: Habilidades
+        fields:
+          icon:
+            one: Ícone
+            other: Ícones
+            help: "Identificador da tecnologia (ex: ruby, rails, vue). Não use SVG, PNG ou URLs."
+      experience:
+        one: Experiência
+        other: Experiências
+      education:
+        one: Formação
+        other: Formações
+      certification:
+        one: Certificação
+        other: Certificações
+      social_link:
+        one: Rede social
+        other: Redes sociais
+      project_skill:
+        one: Habilidade do projeto
+        other: Habilidades do projeto
+    field_translations:
+      name:
+        one: Nome
+        other: Nomes
+      headline:
+        one: Título
+        other: Títulos
+      bio:
+        one: Biografia
+        other: Biografias
+      location:
+        one: Localização
+        other: Localizações
+      email:
+        one: E-mail
+        other: E-mails
+      phone:
+        one: Telefone
+        other: Telefones
+      github_url:
+        one: URL do GitHub
+        other: URLs do GitHub
+      linkedin_url:
+        one: URL do LinkedIn
+        other: URLs do LinkedIn
+      website_url:
+        one: URL do site
+        other: URLs do site
+      avatar_url:
+        one: URL do avatar
+        other: URLs do avatar
+      resume_url:
+        one: URL do currículo
+        other: URLs do currículo
+      available_for_work:
+        one: Disponível para trabalho
+        other: Disponível para trabalho
+      slug:
+        one: Slug
+        other: Slugs
+      short_description:
+        one: Descrição curta
+        other: Descrições curtas
+      description:
+        one: Descrição
+        other: Descrições
+      image_url:
+        one: URL da imagem
+        other: URLs da imagem
+      demo_url:
+        one: URL da demo
+        other: URLs da demo
+      featured:
+        one: Destaque
+        other: Destaques
+      position:
+        one: Posição
+        other: Posições
+      start_date:
+        one: Data de início
+        other: Datas de início
+      end_date:
+        one: Data de término
+        other: Datas de término
+      category:
+        one: Categoria
+        other: Categorias
+      icon:
+        one: Ícone
+        other: Ícones
+      level:
+        one: Nível
+        other: Níveis
+      role:
+        one: Cargo
+        other: Cargos
+      company:
+        one: Empresa
+        other: Empresas
+      employment_type:
+        one: Tipo de contrato
+        other: Tipos de contrato
+      current:
+        one: Atual
+        other: Atuais
+      course:
+        one: Curso
+        other: Cursos
+      institution:
+        one: Instituição
+        other: Instituições
+      degree:
+        one: Grau
+        other: Graus
+      issuer:
+        one: Emissor
+        other: Emissores
+      credential_url:
+        one: URL da credencial
+        other: URLs da credencial
+      credential_id:
+        one: ID da credencial
+        other: IDs da credencial
+      issued_at:
+        one: Emitido em
+        other: Emitido em
+      expires_at:
+        one: Expira em
+        other: Expira em
+      platform:
+        one: Plataforma
+        other: Plataformas
+      url:
+        one: URL
+        other: URLs
+      username:
+        one: Usuário
+        other: Usuários
+      profile:
+        one: Perfil
+        other: Perfis
+      project:
+        one: Projeto
+        other: Projetos
+      skill:
+        one: Habilidade
+        other: Habilidades
+      skills:
+        one: Habilidade
+        other: Habilidades
+      projects:
+        one: Projeto
+        other: Projetos
+      experiences:
+        one: Experiência
+        other: Experiências
+      educations:
+        one: Formação
+        other: Formações
+      certifications:
+        one: Certificação
+        other: Certificações
+      social_links:
+        one: Rede social
+        other: Redes sociais

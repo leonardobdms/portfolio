@@ -13,6 +13,7 @@ class CreateExperiences < ActiveRecord::Migration[8.1]
       t.date :end_date
       t.boolean :current, null: false, default: false
       t.integer :position, null: false, default: 0
+      t.string :website_url, null: false, default: ""
 
       t.timestamps
     end

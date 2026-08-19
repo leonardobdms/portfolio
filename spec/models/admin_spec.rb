@@ -10,4 +10,8 @@ RSpec.describe Admin, type: :model do
   it "is invalid without an email" do
     expect(build(:admin, email: nil)).not_to be_valid
   end
+
+  it "is treated as an Avo admin" do
+    expect(build(:admin).is_admin?).to be(true)
+  end
 end

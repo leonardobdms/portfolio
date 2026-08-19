@@ -1,0 +1,177 @@
+en:
+  avo:
+    resource_translations:
+      profile:
+        one: Profile
+        other: Profiles
+      project:
+        one: Project
+        other: Projects
+      skill:
+        one: Skill
+        other: Skills
+        fields:
+          icon:
+            one: Icon
+            other: Icons
+            help: "Technology identifier (e.g. ruby, rails, vue). Do not use SVG, PNG, or URLs."
+      experience:
+        one: Experience
+        other: Experiences
+      education:
+        one: Education
+        other: Education
+      certification:
+        one: Certification
+        other: Certifications
+      social_link:
+        one: Social link
+        other: Social links
+      project_skill:
+        one: Project skill
+        other: Project skills
+    field_translations:
+      name:
+        one: Name
+        other: Names
+      headline:
+        one: Headline
+        other: Headlines
+      bio:
+        one: Bio
+        other: Bios
+      location:
+        one: Location
+        other: Locations
+      email:
+        one: Email
+        other: Emails
+      phone:
+        one: Phone
+        other: Phones
+      github_url:
+        one: GitHub URL
+        other: GitHub URLs
+      linkedin_url:
+        one: LinkedIn URL
+        other: LinkedIn URLs
+      website_url:
+        one: Website URL
+        other: Website URLs
+      avatar_url:
+        one: Avatar URL
+        other: Avatar URLs
+      resume_url:
+        one: Resume URL
+        other: Resume URLs
+      available_for_work:
+        one: Available for work
+        other: Available for work
+      slug:
+        one: Slug
+        other: Slugs
+      short_description:
+        one: Short description
+        other: Short descriptions
+      description:
+        one: Description
+        other: Descriptions
+      image_url:
+        one: Image URL
+        other: Image URLs
+      demo_url:
+        one: Demo URL
+        other: Demo URLs
+      featured:
+        one: Featured
+        other: Featured
+      position:
+        one: Position
+        other: Positions
+      start_date:
+        one: Start date
+        other: Start dates
+      end_date:
+        one: End date
+        other: End dates
+      category:
+        one: Category
+        other: Categories
+      icon:
+        one: Icon
+        other: Icons
+      level:
+        one: Level
+        other: Levels
+      role:
+        one: Role
+        other: Roles
+      company:
+        one: Company
+        other: Companies
+      employment_type:
+        one: Employment type
+        other: Employment types
+      current:
+        one: Current
+        other: Current
+      course:
+        one: Course
+        other: Courses
+      institution:
+        one: Institution
+        other: Institutions
+      degree:
+        one: Degree
+        other: Degrees
+      issuer:
+        one: Issuer
+        other: Issuers
+      credential_url:
+        one: Credential URL
+        other: Credential URLs
+      credential_id:
+        one: Credential ID
+        other: Credential IDs
+      issued_at:
+        one: Issued at
+        other: Issued at
+      expires_at:
+        one: Expires at
+        other: Expires at
+      platform:
+        one: Platform
+        other: Platforms
+      url:
+        one: URL
+        other: URLs
+      username:
+        one: Username
+        other: Usernames
+      profile:
+        one: Profile
+        other: Profiles
+      project:
+        one: Project
+        other: Projects
+      skill:
+        one: Skill
+        other: Skills
+      skills:
+        one: Skill
+        other: Skills
+      projects:
+        one: Project
+        other: Projects
+      experiences:
+        one: Experience
+        other: Experiences
+      educations:
+        one: Education
+        other: Education
+      certifications:
+        one: Certification
+        other: Certifications
+      social_links:
+        one: Social link
+        other: Social links

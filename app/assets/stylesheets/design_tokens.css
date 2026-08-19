@@ -1,0 +1,17 @@
+/* Official design tokens. Hex values live here only. */
+:root {
+  --ds-primary: #6366f1;
+  --ds-primary-light: #818cf8;
+  --ds-primary-dark: #4f46e5;
+  --ds-secondary: #8b5cf6;
+  --ds-accent: #06b6d4;
+  --ds-background: #0b1120;
+  --ds-surface: #111827;
+  --ds-surface-light: #1e293b;
+  --ds-text: #f8fafc;
+  --ds-text-muted: #94a3b8;
+  --ds-border: #334155;
+  --ds-success: #22c55e;
+  --ds-warning: #f59e0b;
+  --ds-danger: #ef4444;
+}
