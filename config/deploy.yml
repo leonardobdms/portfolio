@@ -84,8 +84,8 @@ builder:
   # remote: ssh://docker@docker-builder-server
 
 # Default SSH user is root. Uncomment if the VM uses another user with Docker access.
-# ssh:
-#   user: ubuntu
+ssh:
+  user: leonardo
 
 # Postgres on the same VM. Not exposed to the LAN — only the Kamal Docker network.
 accessories:
