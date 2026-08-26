@@ -320,7 +320,7 @@ Files under `app/frontend/types/serializers` and `app/frontend/routes` are gener
 - test: `portfolio_test`
 - production: `portfolio_production` (plus Solid databases: cache, queue, cable)
 
-Production uses user `portfolio`, host `DB_HOST` (Kamal: `portfolio-db`), and password `PORTFOLIO_DATABASE_PASSWORD`.
+Production uses user `portfolio` (`PORTFOLIO_DATABASE_USERNAME`), host `PORTFOLIO_DATABASE_HOST` (Kamal: `portfolio-db`), and password `PORTFOLIO_DATABASE_PASSWORD`.
 
 ### Secrets
 

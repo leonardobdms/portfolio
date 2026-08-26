@@ -87,9 +87,9 @@ production:
   primary: &primary_production
     <<: *default
     database: portfolio_production
-    username: <%= ENV["PORTFOLIO_DATABASE_USERNAME"] %>
+    username: <%= ENV.fetch("PORTFOLIO_DATABASE_USERNAME", "portfolio") %>
     password: <%= ENV["PORTFOLIO_DATABASE_PASSWORD"] %>
-    host: <%= ENV["PORTFOLIO_DATABASE_HOST"] %>
+    host: <%= ENV["PORTFOLIO_DATABASE_HOST"].presence || ENV["DB_HOST"] %>
     port: <%= ENV.fetch("PORTFOLIO_DATABASE_PORT", 5432) %>
   cache:
     <<: *primary_production

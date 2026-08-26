@@ -44,8 +44,11 @@ env:
     # When you start using multiple servers, you should split out job processing to a dedicated machine.
     SOLID_QUEUE_IN_PUMA: true
 
+    # Must match config/database.yml (PORTFOLIO_DATABASE_*) and the db accessory.
     # Kamal names the accessory container {service}-{accessory} on the kamal Docker network.
-    DB_HOST: portfolio-db
+    PORTFOLIO_DATABASE_USERNAME: portfolio
+    PORTFOLIO_DATABASE_HOST: portfolio-db
+    PORTFOLIO_DATABASE_PORT: 5432
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
