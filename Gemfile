@@ -85,11 +85,11 @@ gem "avo", ">= 4.0.0"
 
 gem "dotenv", "~> 3.2"
 
-gem "rack-attack", "~> 6.8", groups: [ :development, :test ]
+gem "rack-attack", "~> 6.8"
 
 gem "axe-core-rspec", "~> 4.13", groups: [ :development, :test ]
-gem "sentry-ruby", "~> 6.7", groups: [ :development, :test ]
-gem "sentry-rails", "~> 6.7", groups: [ :development, :test ]
+gem "sentry-ruby", "~> 6.7"
+gem "sentry-rails", "~> 6.7"
 
 gem "validators", "~> 3.4"
 
