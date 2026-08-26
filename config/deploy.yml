@@ -23,9 +23,9 @@ servers:
 # Let's Encrypt needs a public DNS name pointing at the VM. For this LAN IP, leave SSL off
 # and open the app at http://192.168.15.7
 #
-# proxy:
-#   ssl: true
-#   host: app.example.com
+proxy:
+  ssl: true
+  host: leonardombd.dev.br
 
 # Local registry on the machine that runs `bin/kamal`. No Docker Hub / GHCR login needed.
 # Kamal starts it and SSH-tunnels it to the VM so the VM can pull the image.
