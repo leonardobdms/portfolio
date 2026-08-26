@@ -418,7 +418,7 @@ Production uses **Kamal** (`config/deploy.yml`) and a Docker container (`Dockerf
 | Assets | `/rails/public` (bridged across deploys) |
 | Jobs | Solid Queue in Puma |
 
-Let's Encrypt SSL is commented out: the current host is a LAN IP, so the app serves HTTP. For a public domain, uncomment `proxy.ssl` / `proxy.host` and enable `assume_ssl` + `force_ssl` in production.
+Public HTTPS is Cloudflare Tunnel → `http://localhost:80` (kamal-proxy). `proxy.ssl` stays off so Let's Encrypt does not fight Cloudflare. Rails has `assume_ssl` + `force_ssl`. The tunnel hostname `leonardombd.dev.br` must be a dedicated ingress rule *before* other apps (Glitchtip on `:8000`).
 
 Useful commands:
 

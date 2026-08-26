@@ -13,19 +13,14 @@ servers:
   #     - 192.168.15.7
   #   cmd: bin/jobs
 
-# Enable SSL auto certification via Let's Encrypt and allow for multiple apps on a single web server.
-# If used with Cloudflare, set encryption mode in SSL/TLS setting to "Full" to enable CF-to-app encryption.
+# TLS terminates at Cloudflare Tunnel, not Let's Encrypt. kamal-proxy serves HTTP on :80;
+# keep assume_ssl + force_ssl in production.rb. Tunnel hostname must point at http://localhost:80.
 #
-# Using an SSL proxy like this requires turning on config.assume_ssl and config.force_ssl in production.rb!
-#
-# Don't use this when deploying to multiple web servers (then you have to terminate SSL at your load balancer).
-#
-# Let's Encrypt needs a public DNS name pointing at the VM. For this LAN IP, leave SSL off
-# and open the app at http://192.168.15.7
-#
+# Let's Encrypt (proxy.ssl: true) only works if DNS is grey-cloud to a public IP on this VM.
 proxy:
-  ssl: true
+  ssl: false
   host: leonardombd.dev.br
+  forward_headers: true
 
 # Local registry on the machine that runs `bin/kamal`. No Docker Hub / GHCR login needed.
 # Kamal starts it and SSH-tunnels it to the VM so the VM can pull the image.
