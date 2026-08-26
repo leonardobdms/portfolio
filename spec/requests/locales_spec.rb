@@ -51,5 +51,18 @@ RSpec.describe "Locales", type: :request do
         alert: "E-mail ou senha inválidos."
       )
     end
+
+    it "falls back to English when Accept-Language is unsupported" do
+      get new_admin_session_path, headers: { "HTTP_ACCEPT_LANGUAGE" => "fr-FR,fr;q=0.9" }
+
+      expect(inertia).to have_props(locale: "en")
+    end
+
+    it "redirects to the home page when there is no referer" do
+      get switch_locale_path, params: { locale: "pt-BR" }
+
+      expect(response).to redirect_to(root_path)
+      expect(cookies[:locale]).to eq("pt-BR")
+    end
   end
 end

@@ -6,16 +6,17 @@ RSpec.describe "Contacts", type: :request do
   let!(:profile) { create(:profile, email: "owner@example.com") }
 
   describe "POST /contacts" do
-    it "creates a message and redirects with notice" do
+    it "creates a message, enqueues email, and redirects with notice" do
       expect {
         post contacts_path, params: {
           name: "Jane Doe",
-          email: "jane@example.com",
+          email: "jane@gmail.com",
           subject: "Hello",
           message: "I want to work with you on a project.",
           "cf-turnstile-response" => "valid-token"
         }
       }.to change(Contact, :count).by(1)
+        .and have_enqueued_mail(ContactMailer, :new_message)
 
       expect(response).to redirect_to(root_path(anchor: "contact"))
       follow_redirect!
@@ -36,7 +37,7 @@ RSpec.describe "Contacts", type: :request do
       expect(inertia).to have_props(
         errors: {
           name: "Name can't be blank",
-          email: "Email is invalid",
+          email: "Email is not a valid address",
           subject: "Subject can't be blank",
           message: "Message is too short (minimum is 10 characters)"
         }
@@ -49,7 +50,7 @@ RSpec.describe "Contacts", type: :request do
       expect {
         post contacts_path, params: {
           name: "Jane Doe",
-          email: "jane@example.com",
+          email: "jane@gmail.com",
           subject: "Hello",
           message: "I want to work with you on a project.",
           "cf-turnstile-response" => "invalid-token"
@@ -67,7 +68,7 @@ RSpec.describe "Contacts", type: :request do
       expect {
         post contacts_path, params: {
           name: "Bot",
-          email: "bot@example.com",
+          email: "bot@gmail.com",
           subject: "Spam",
           message: "Buy my product please now.",
           website: "http://spam.test",
@@ -81,7 +82,7 @@ RSpec.describe "Contacts", type: :request do
     it "redirects with alert when rate limited" do
       contact_params = {
         name: "Jane Doe",
-        email: "jane@example.com",
+        email: "jane@gmail.com",
         subject: "Hello",
         message: "I want to work with you on a project.",
         "cf-turnstile-response" => "valid-token"
@@ -95,7 +96,7 @@ RSpec.describe "Contacts", type: :request do
 
       post contacts_path,
            params: contact_params.merge(
-             email: "other@example.com",
+             email: "other@gmail.com",
              subject: "Hello again",
              message: "Another message for you."
            )

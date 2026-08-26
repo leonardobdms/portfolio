@@ -2,8 +2,8 @@ import { createInertiaApp } from "@inertiajs/vue3"
 import * as Sentry from "@sentry/vue"
 import type { DefineComponent } from "vue"
 
-import { createI18nInstance, localeFromPage } from "@/i18n"
 import { initFlashNotifications } from "@/composables/useFlash"
+import { createI18nInstance, localeFromPage } from "@/i18n"
 import AppLayout from "@/layouts/AppLayout.vue"
 
 initFlashNotifications()

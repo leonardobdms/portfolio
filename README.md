@@ -38,7 +38,7 @@ There are two surfaces:
 | Home `/` | Visitors | Inertia + Vue 3, SSR |
 | Admin `/admin` | Authenticated administrators | Avo 4, Devise |
 
-Home sections render only when data exists (skills, experience, featured projects, bio, education, contact). Header navigation is derived from the same rules.
+Home sections render only when data exists (skills, experience, featured projects, bio, certifications, education, contact). Header navigation is derived from the same rules (education is on the page but not in the header nav).
 
 ---
 
@@ -61,7 +61,7 @@ Home sections render only when data exists (skills, experience, featured project
 | CMS | Avo | >= 4.0 |
 | Jobs / cache / cable | Solid Queue, Solid Cache, Solid Cable | — |
 | Deploy | Kamal + Docker | `portfolio` image |
-| Tests | RSpec, FactoryBot, Capybara, SimpleCov | 100% coverage on models and serializers |
+| Tests | RSpec, FactoryBot, Capybara, SimpleCov, Vitest | 100% coverage on app Ruby (models, serializers, controllers, mailers, helpers, lib) and frontend lib |
 
 ---
 
@@ -70,15 +70,18 @@ Home sections render only when data exists (skills, experience, featured project
 ```
 Browser
   │
-  ├─ GET /                  HomeController#index
+  ├─ GET /                     HomeController#index
   │     └─ @profile (Alba → HomeIndexSerializer)
   │           └─ Vue page: app/frontend/pages/home/index.vue
   │
-  ├─ GET /locale?locale=…   LocalesController#update  (permanent cookie)
+  ├─ GET /projects/:slug       ProjectsController#show
+  ├─ POST /contacts            ContactsController#create
+  ├─ GET /locale?locale=…      LocalesController#update  (permanent cookie)
+  ├─ GET /theme?theme=…        ThemesController#update   (permanent cookie)
+  ├─ GET /sitemap.xml          SitemapsController#show
+  ├─ GET /admins/sign_in       Admins::SessionsController (Inertia)
   │
-  ├─ GET /admins/sign_in    Admins::SessionsController (Inertia)
-  │
-  └─ /admin/*               Avo (authenticate :admin)
+  └─ /admin/*                  Avo (authenticate :admin)
 ```
 
 Home data flow:
@@ -108,6 +111,7 @@ Profile 1 ──* Experience
         1 ──* Project
                  * ──* Skill   (ProjectSkill)
 Admin              (Devise, isolated from the profile)
+Contact            (inbound messages from the public form)
 ```
 
 ### Profile
@@ -142,6 +146,10 @@ Name, unique slug, descriptions, image, GitHub, demo, `featured`, dates, `positi
 
 Platform, URL, username, icon, `position`. When present, they replace the profile's GitHub/LinkedIn/website fallback.
 
+### Contact
+
+Public form submissions: name, email, subject, message, plus `ip` and `user_agent`. Hidden from the Avo sidebar; opened from the profile or by URL.
+
 ### Admin
 
 Devise modules: `database_authenticatable`, `recoverable`, `rememberable`, `validatable`. No public sign-up. Seeds create an admin **only in the local environment**.
@@ -162,14 +170,20 @@ Single page (`pages/home/index.vue`) with conditional sections:
 | Experience | `ExperienceSection` | `experiences.length > 0` |
 | Projects | `FeaturedProjectsSection` | any `featured` |
 | About | `AboutSection` | `bio` present |
+| Certifications | `CertificationsSection` | `certifications.length > 0` |
 | Education | `EducationSection` | `educations.length > 0` |
 | Contact | `ContactSection` | email, phone, or socials |
+| Footer | `SiteFooter` | always |
+
+Project detail is a second public page (`pages/projects/show.vue`) at `/projects/:slug`.
+
+The contact form posts to `POST /contacts`. It uses a honeypot field, Cloudflare Turnstile (`TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`), and an IP rate limit (5 messages / hour). Valid messages are stored and emailed with `ContactMailer`.
 
 Presentation helpers live in `app/frontend/lib/home.ts` (not in the template): featured projects, grouping by category, date ranges, WhatsApp links, nav items.
 
 Admin login is Inertia (`pages/admins/sessions/new.vue`), not the default Devise view. A successful sign-in uses `inertia_location` to `/admin`.
 
-Health check: `GET /up` (silenced in production logs).
+Health check: `GET /up` (silenced in production logs). Theme is a permanent `theme` cookie (`dark` default, `light` supported), shared with Inertia as `theme`.
 
 ---
 
@@ -319,6 +333,14 @@ Do not commit `.env`, `master.key`, or Kamal secrets.
 
 `config/initializers/inertia_rails.rb`: versioning from the Vite digest, history encryption in production, SSR enabled.
 
+### Contact / Turnstile
+
+| Variable | Purpose |
+|---|---|
+| `TURNSTILE_SITE_KEY` | Public widget key (Inertia shared prop) |
+| `TURNSTILE_SECRET_KEY` | Server-side verification. Blank in local env skips the remote check |
+| `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Optional production analytics snippet |
+
 ### Avo
 
 `config/initializers/avo.rb`: `current_user_method :current_admin`, Devise sign-out, home on the profile.
@@ -327,9 +349,12 @@ Do not commit `.env`, `master.key`, or Kamal secrets.
 
 ## Testing and quality
 
+Keep **100% coverage** and RuboCop-clean Ruby. Specs must cover every public home section (including the empty/hidden case). Update the README in the same change as behavior.
+
 ```bash
-bin/rspec                         # suite
+bin/rspec                         # suite (SimpleCov 100%)
 bin/rubocop                       # Ruby style
+npm run test                      # Vitest (100% on frontend lib)
 npm run lint                      # ESLint (zero warnings)
 npm run format                    # Prettier --check
 npm run check                     # vue-tsc + tsc
@@ -338,7 +363,7 @@ bin/bundler-audit                 # vulnerable gems
 bin/ci                            # full local pipeline
 ```
 
-SimpleCov covers `app/models` and `app/serializers` with a **100% minimum**.
+SimpleCov covers `app/models`, `app/serializers`, `app/controllers`, `app/mailers`, `app/helpers`, and `lib/` with a **100% minimum**. Vitest covers `app/frontend/lib` and `app/frontend/i18n.ts` at **100%**.
 
 Specs:
 
@@ -346,11 +371,19 @@ Specs:
 |---|---|
 | Models | `spec/models/` |
 | Serializers | `spec/serializers/` |
+| Lib | `spec/lib/` |
+| Helpers | `spec/helpers/` |
+| Mailers | `spec/mailers/` |
+| Home (all sections) | `spec/requests/home_spec.rb`, `spec/system/home_a11y_spec.rb` |
+| Projects | `spec/requests/projects_spec.rb` |
+| Contact form | `spec/requests/contacts_spec.rb` |
 | Devise/Inertia login | `spec/requests/admins/sessions_spec.rb` |
-| Avo (auth, identity, singular profile) | `spec/requests/avo_spec.rb` |
-| Locale | `spec/requests/locales_spec.rb` |
+| Avo (auth, identity, resources) | `spec/requests/avo_spec.rb` |
+| Locale / theme | `spec/requests/locales_spec.rb`, `spec/requests/themes_spec.rb` |
+| Sitemap | `spec/requests/sitemaps_spec.rb` |
+| Frontend lib | `app/frontend/**/*.test.ts` |
 
-Inertia request specs use matchers (`render_component`, `have_props`, `have_flash`), not direct access to `inertia.component`.
+Inertia request specs use matchers (`render_component`, `have_props`, `have_flash`), not direct access to `inertia.component`. After POST/PATCH/DELETE with redirect, call `follow_redirect!` before asserting flash or props.
 
 `bin/ci` also replants seeds in test (`db:seed:replant`) and requires Typelizer types to be clean in git.
 
@@ -362,8 +395,9 @@ GitHub Actions (`.github/workflows/ci.yml`) on PRs and pushes to `main`:
 
 1. **scan_ruby** — Brakeman + bundler-audit
 2. **lint_js** — ESLint, Prettier, typecheck
-3. **lint** — RuboCop
-4. **test** — Postgres 16, `db:test:prepare spec`; Capybara screenshots on failure
+3. **test_js** — Vitest
+4. **lint** — RuboCop
+5. **test** — Postgres 16, `db:test:prepare spec`; Capybara screenshots on failure
 
 Weekly Dependabot: bundler, npm, and GitHub Actions.
 
@@ -408,20 +442,25 @@ app/
   controllers/
     home_controller.rb
     locales_controller.rb
+    themes_controller.rb
+    contacts_controller.rb
+    projects_controller.rb
+    sitemaps_controller.rb
     admins/sessions_controller.rb
     avo/                  overrides (singular profile)
-    concerns/             SetLocale, AvoLocale
+    concerns/             SetLocale, SetTheme, AvoLocale
   frontend/
     entrypoints/          inertia.ts, application.css
-    pages/                Inertia pages (home, login)
+    pages/                Inertia pages (home, project, login)
     components/home/      landing sections
     components/ui/        shadcn-vue primitives
     locales/              vue-i18n JSON
-    lib/home.ts           home UI derivation
+    lib/                  home UI derivation, icons, theme
     types/serializers/    generated by Typelizer
     routes/               generated by Typelizer
   models/
   serializers/            Alba (+ Typelizer / alba-inertia helpers)
+  mailers/                ContactMailer
   assets/stylesheets/     design_tokens.css, avo-overrides.css
 config/
   deploy.yml              Kamal
@@ -431,7 +470,7 @@ db/
   schema.rb
   seeds.rb
   migrate/
-lib/locale_resolver.rb
+lib/                      LocaleResolver, ThemeResolver, TurnstileVerifier, ContactRateLimit
 spec/
 Dockerfile
 Procfile.dev
@@ -449,6 +488,9 @@ Procfile.dev
 - **Single profile.** New content entities should `belongs_to :profile` and order by `position`.
 - **Skill icons** are identifiers (`ruby`, `vue-js`), never files or URLs.
 - **Do not edit** `app/frontend/types/serializers` or `app/frontend/routes` by hand.
+- **100% coverage.** Ruby SimpleCov and Vitest lib coverage stay at 100%. New behavior ships with tests.
+- **RuboCop.** Ruby changes must stay organized (`bin/rubocop`).
+- **Docs.** Update `README.md` in the same change as behavior, routes, env vars, or quality-bar changes.
 
 ### Adding content to the home page
 
@@ -457,4 +499,4 @@ Procfile.dev
 3. `bin/rails typelizer:generate:refresh`
 4. Avo resource (and sidebar, if it should be navigable)
 5. Use the field in the Vue page/section
-6. Model and serializer specs (keep 100% coverage)
+6. Specs for the model, serializer, and home section (keep 100% coverage; cover the empty/hidden case)

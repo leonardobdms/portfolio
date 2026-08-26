@@ -58,7 +58,12 @@ const sinceYear = computed(() =>
           </Badge>
         </li>
         <li v-for="skill in specialties" :key="skill.id">
-          <Badge class="rounded-xl px-3 py-1.5">{{ skill.name }}</Badge>
+          <Badge
+            variant="outline"
+            class="border-border text-text rounded-xl px-3 py-1.5"
+          >
+            {{ skill.name }}
+          </Badge>
         </li>
       </ul>
     </Reveal>

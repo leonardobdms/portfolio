@@ -1,0 +1,14 @@
+---
+description: Keep README and project docs in sync with every behavior, stack, or quality-bar change.
+alwaysApply: true
+---
+
+# Keep documentation current
+
+Update `README.md` in the same change as the code. Do not leave docs for a later commit.
+
+Document new or changed routes, env vars, home sections, domain models, admin behavior, i18n, tests, CI, and deploy.
+
+If a table, architecture diagram, or command in the README would be wrong after the change, fix it before finishing.
+
+Do not add extra markdown files unless asked. The README is the project source of truth.

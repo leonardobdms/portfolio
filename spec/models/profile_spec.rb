@@ -47,4 +47,17 @@ RSpec.describe Profile, type: :model do
 
     expect(profile.experiences).to eq([ first, second ])
   end
+
+  describe ".current" do
+    it "returns the first profile" do
+      first = create(:profile, name: "First")
+      create(:profile, name: "Second")
+
+      expect(described_class.current).to eq(first)
+    end
+
+    it "returns nil when no profile exists" do
+      expect(described_class.current).to be_nil
+    end
+  end
 end

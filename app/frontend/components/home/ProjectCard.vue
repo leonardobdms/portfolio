@@ -43,17 +43,7 @@ const hasLinks = Boolean(props.project.github_url || props.project.demo_url)
         :alt="project.name"
         class="size-full object-cover"
       />
-      <div
-        v-else
-        class="flex size-full items-end p-6 md:p-8"
-        aria-hidden="true"
-      >
-        <p
-          class="text-text/20 text-3xl font-semibold tracking-tighter md:text-4xl"
-        >
-          {{ project.name }}
-        </p>
-      </div>
+      <div v-else class="size-full" aria-hidden="true" />
     </div>
 
     <CardHeader class="pt-6 pb-4">

@@ -26,10 +26,7 @@ function localeAriaLabel(locale: SupportedLocale): string {
 </script>
 
 <template>
-  <nav
-    class="flex items-center gap-1"
-    :aria-label="t('locale.label')"
-  >
+  <nav class="flex items-center gap-1" :aria-label="t('locale.label')">
     <Button
       v-for="locale in SUPPORTED_LOCALES"
       :key="locale"
@@ -37,7 +34,11 @@ function localeAriaLabel(locale: SupportedLocale): string {
       size="icon-sm"
       as="a"
       :href="localeSwitchPath(locale)"
-      :class="currentLocale === locale ? 'border-primary ring-primary ring-1' : undefined"
+      :class="
+        currentLocale === locale
+          ? 'border-primary ring-primary ring-1'
+          : undefined
+      "
       :aria-current="currentLocale === locale ? 'true' : undefined"
       :aria-label="localeAriaLabel(locale)"
       :title="localeLabel(locale)"

@@ -5,7 +5,7 @@
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
   </url>
-  <% @profile.projects.each do |project| %>
+  <% Array(@profile&.projects).each do |project| %>
     <url>
       <loc><%= project_url(project) %></loc>
       <changefreq>monthly</changefreq>

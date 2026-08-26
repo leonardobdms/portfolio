@@ -3,6 +3,7 @@ import { useForm, usePage } from "@inertiajs/vue3"
 import { Mail } from "lucide-vue-next"
 import { computed, ref } from "vue"
 import { useI18n } from "vue-i18n"
+import { toast } from "vue-sonner"
 
 import SocialIcon from "@/components/SocialIcon.vue"
 import TurnstileWidget from "@/components/TurnstileWidget.vue"
@@ -14,7 +15,6 @@ import { Textarea } from "@/components/ui/textarea"
 import { profileSocials, whatsappHref } from "@/lib/home"
 import { contacts } from "@/routes"
 import type { Profile } from "@/types"
-import { toast } from "vue-sonner"
 
 const props = defineProps<{
   profile: Profile
@@ -116,10 +116,7 @@ function submit() {
         }}
       </p>
 
-      <form
-        class="grid gap-4 md:grid-cols-2"
-        @submit.prevent="submit"
-      >
+      <form class="grid gap-4 md:grid-cols-2" @submit.prevent="submit">
         <input
           v-model="form.website"
           type="text"
@@ -140,7 +137,9 @@ function submit() {
             autocomplete="name"
             :disabled="form.processing"
             :aria-invalid="form.errors.name ? true : undefined"
-            :aria-describedby="form.errors.name ? 'contact-name-error' : undefined"
+            :aria-describedby="
+              form.errors.name ? 'contact-name-error' : undefined
+            "
           />
           <p
             v-if="form.errors.name"
@@ -162,7 +161,9 @@ function submit() {
             autocomplete="email"
             :disabled="form.processing"
             :aria-invalid="form.errors.email ? true : undefined"
-            :aria-describedby="form.errors.email ? 'contact-email-error' : undefined"
+            :aria-describedby="
+              form.errors.email ? 'contact-email-error' : undefined
+            "
           />
           <p
             v-if="form.errors.email"
@@ -230,11 +231,7 @@ function submit() {
             @error="onTurnstileReset"
             @expire="onTurnstileReset"
           />
-          <p
-            v-if="captchaError"
-            class="text-danger mt-2 text-sm"
-            role="alert"
-          >
+          <p v-if="captchaError" class="text-danger mt-2 text-sm" role="alert">
             {{ captchaError }}
           </p>
         </div>

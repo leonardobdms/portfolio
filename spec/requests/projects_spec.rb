@@ -17,13 +17,21 @@ RSpec.describe "Projects", type: :request do
       expect(inertia.props[:profile][:name]).to eq(profile.name)
     end
 
-    it "includes navigation slugs in props" do
+    it "includes previous and next slugs" do
       first_project = create(:project, profile:, position: 1, slug: "first")
       second_project = create(:project, profile:, position: 2, slug: "second")
+      third_project = create(:project, profile:, position: 3, slug: "third")
+
+      get project_path(first_project.slug)
+      expect(inertia.props[:previous_slug]).to be_nil
+      expect(inertia.props[:next_slug]).to eq("second")
 
       get project_path(second_project.slug)
-
       expect(inertia.props[:previous_slug]).to eq("first")
+      expect(inertia.props[:next_slug]).to eq("third")
+
+      get project_path(third_project.slug)
+      expect(inertia.props[:previous_slug]).to eq("second")
       expect(inertia.props[:next_slug]).to be_nil
     end
 

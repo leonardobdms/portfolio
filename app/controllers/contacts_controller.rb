@@ -38,7 +38,6 @@ class ContactsController < ApplicationController
     if count > RATE_LIMIT
       flash[:alert] = I18n.t("contact.rate_limited")
       redirect_to root_path(anchor: "contact")
-      return
     end
   end
 

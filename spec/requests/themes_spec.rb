@@ -20,10 +20,18 @@ RSpec.describe "Themes", type: :request do
 
     it "shares the current theme with Inertia pages" do
       cookies[:theme] = "light"
+      create(:profile)
 
       get root_path
 
       expect(inertia).to have_props(theme: "light")
+    end
+
+    it "redirects to the home page when there is no referer" do
+      get switch_theme_path, params: { theme: "light" }
+
+      expect(response).to redirect_to(root_path)
+      expect(cookies[:theme]).to eq("light")
     end
   end
 end

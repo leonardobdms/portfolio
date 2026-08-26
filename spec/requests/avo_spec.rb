@@ -61,6 +61,22 @@ RSpec.describe "Avo admin panel", type: :request do
 
       expect(response).to redirect_to("/admin/resources/profiles/#{profile.to_param}")
     end
+
+    it "redirects the index to new when no profile exists" do
+      sign_in create(:admin)
+
+      get "/admin/resources/profiles"
+
+      expect(response).to redirect_to("/admin/resources/profiles/new")
+    end
+
+    it "renders the new profile form when none exists" do
+      sign_in create(:admin)
+
+      get "/admin/resources/profiles/new"
+
+      expect(response).to have_http_status(:success)
+    end
   end
 
   describe "resources" do
@@ -80,6 +96,25 @@ RSpec.describe "Avo admin panel", type: :request do
       get "/admin/resources/skills"
 
       expect(response).to have_http_status(:success)
+    end
+
+    %w[
+      experiences educations certifications social_links contacts project_skills
+    ].each do |resource|
+      it "loads the #{resource} index" do
+        sign_in create(:admin)
+        create(:profile)
+        create(:contact) if resource == "contacts"
+        create(:project_skill) if resource == "project_skills"
+        create(:experience) if resource == "experiences"
+        create(:education) if resource == "educations"
+        create(:certification) if resource == "certifications"
+        create(:social_link) if resource == "social_links"
+
+        get "/admin/resources/#{resource}"
+
+        expect(response).to have_http_status(:success)
+      end
     end
 
     it "renders the sidebar in Portuguese when the locale cookie is set" do

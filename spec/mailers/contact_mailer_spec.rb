@@ -16,5 +16,12 @@ RSpec.describe ContactMailer, type: :mailer do
       expect(mail.subject).to include(contact.subject)
       expect(mail.body.encoded).to include(contact.message)
     end
+
+    it "sends with no recipient when there is no profile" do
+      Profile.delete_all
+      mail = ContactMailer.new_message(contact)
+
+      expect(mail.to).to be_nil
+    end
   end
 end

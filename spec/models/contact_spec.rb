@@ -29,4 +29,10 @@ RSpec.describe Contact, type: :model do
     expect(message).not_to be_valid
     expect(message.errors[:message]).to be_present
   end
+
+  it "rejects values that exceed maximum lengths" do
+    expect(build(:contact, name: "a" * 121)).not_to be_valid
+    expect(build(:contact, subject: "a" * 201)).not_to be_valid
+    expect(build(:contact, message: "a" * 5001)).not_to be_valid
+  end
 end

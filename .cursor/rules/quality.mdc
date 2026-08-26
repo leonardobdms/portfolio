@@ -1,0 +1,36 @@
+---
+description: 100% test coverage, full section coverage, and RuboCop-clean Ruby on every change.
+alwaysApply: true
+---
+
+# Tests, coverage, and RuboCop
+
+After changing application code, keep the suite green and the quality bar intact.
+
+## Coverage
+
+Ruby SimpleCov must stay at **100%** for models, serializers, controllers, mailers, helpers, and `lib/`.
+
+Vitest must stay at **100%** for `app/frontend/lib` and `app/frontend/i18n.ts`.
+
+New behavior needs tests in the same change. Do not merge or finish with uncovered branches.
+
+## Home sections
+
+Public home specs must cover every section, including the empty/hidden case:
+
+hero, skills, experience, featured projects, about, certifications, education, contact.
+
+Use Inertia matchers (`render_component`, `have_props`, `have_flash`), not `inertia.component` / `inertia.props`. After POST/PATCH/DELETE with redirect, call `follow_redirect!` before asserting flash or props.
+
+## RuboCop
+
+Run `bin/rubocop` on Ruby changes and leave the code organized. Do not disable cops to hide a mess; match existing Omakase style.
+
+## Commands
+
+```bash
+bin/rspec
+bin/rubocop
+npm run test
+```
