@@ -13,13 +13,10 @@ servers:
   #     - 192.168.15.7
   #   cmd: bin/jobs
 
-# TLS terminates at Cloudflare Tunnel, not Let's Encrypt. kamal-proxy serves HTTP on :80;
-# keep assume_ssl + force_ssl in production.rb. Tunnel hostname must point at http://localhost:80.
-#
-# Let's Encrypt (proxy.ssl: true) only works if DNS is grey-cloud to a public IP on this VM.
+# TLS terminates at Cloudflare Tunnel. kamal-proxy serves HTTP on :80 for any Host
+# (IP, localhost, apex, www). Glitchtip stays on :8000. Keep assume_ssl + force_ssl in Rails.
 proxy:
   ssl: false
-  host: leonardombd.dev.br
   forward_headers: true
 
 # Local registry on the machine that runs `bin/kamal`. No Docker Hub / GHCR login needed.
