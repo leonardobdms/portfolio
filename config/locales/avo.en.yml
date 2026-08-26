@@ -30,6 +30,25 @@ en:
       project_skill:
         one: Project skill
         other: Project skills
+      contact:
+        one: Contact
+        other: Contacts
+        fields:
+          subject:
+            one: Subject
+            other: Subjects
+          message:
+            one: Message
+            other: Messages
+          ip:
+            one: IP
+            other: IPs
+          user_agent:
+            one: User agent
+            other: User agents
+          created_at:
+            one: Received at
+            other: Received at
     field_translations:
       name:
         one: Name

@@ -11,6 +11,7 @@ en:
       subject: "Portfolio contact: %{subject}"
   admin:
     sidebar:
+      messages: Messages
       portfolio: Portfolio
       career: Career
       work: Work
@@ -21,6 +22,7 @@ en:
       certifications: Certifications
       projects: Projects
       skills: Skills
+      contacts: Contacts
       avo_status: Avo Status
     locale:
       label: Language

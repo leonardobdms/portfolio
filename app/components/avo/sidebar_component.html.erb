@@ -11,6 +11,12 @@
     <div class="sidebar__body mac-styled-scrollbar">
       <div class="sidebar__body-content">
         <div class="sidebar-section">
+          <%= render Avo::Sidebar::HeadingComponent.new title: t("admin.sidebar.messages"), icon: "tabler/outline/mail" %>
+
+          <%= render Avo::Sidebar::LinkComponent.new label: t("admin.sidebar.contacts"), path: helpers.avo.resources_contacts_path, icon: "tabler/outline/mail" %>
+        </div>
+
+        <div class="sidebar-section">
           <%= render Avo::Sidebar::HeadingComponent.new title: t("admin.sidebar.portfolio"), icon: "tabler/outline/user" %>
 
           <%= render Avo::Sidebar::LinkComponent.new label: t("admin.sidebar.profile"), path: helpers.avo.resources_profiles_path, icon: "tabler/outline/user" %>

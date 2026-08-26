@@ -11,6 +11,7 @@ pt-BR:
       subject: "Contato do portfólio: %{subject}"
   admin:
     sidebar:
+      messages: Mensagens
       portfolio: Portfolio
       career: Carreira
       work: Trabalho
@@ -21,6 +22,7 @@ pt-BR:
       certifications: Certificações
       projects: Projetos
       skills: Habilidades
+      contacts: Contatos
       avo_status: Status do Avo
     locale:
       label: Idioma

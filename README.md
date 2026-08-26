@@ -148,7 +148,7 @@ Platform, URL, username, icon, `position`. When present, they replace the profil
 
 ### Contact
 
-Public form submissions: name, email, subject, message, plus `ip` and `user_agent`. Hidden from the Avo sidebar; opened from the profile or by URL.
+Public form submissions: name, email, subject, message, plus `ip` and `user_agent`. Listed in the Avo sidebar under **Messages**. Submissions are still emailed with `ContactMailer` (Mailpit in development, SMTP in production).
 
 ### Admin
 
@@ -177,7 +177,7 @@ Single page (`pages/home/index.vue`) with conditional sections:
 
 Project detail is a second public page (`pages/projects/show.vue`) at `/projects/:slug`.
 
-The contact form posts to `POST /contacts`. It uses a honeypot field, Cloudflare Turnstile (`TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`), and an IP rate limit (5 messages / hour). Valid messages are stored and emailed with `ContactMailer`.
+The contact form posts to `POST /contacts`. It uses a honeypot field, Cloudflare Turnstile (`TURNSTILE_SITE_KEY` / `TURNSTILE_SECRET_KEY`), and an IP rate limit (5 messages / hour). Valid messages are stored, listed in Avo, and emailed with `ContactMailer`. In development, that mail goes to Mailpit (`localhost:1025`); start it yourself to read the inbox.
 
 Presentation helpers live in `app/frontend/lib/home.ts` (not in the template): featured projects, grouping by category, date ranges, WhatsApp links, nav items.
 
@@ -193,7 +193,7 @@ Health check: `GET /up` (silenced in production logs). Theme is a permanent `the
 - Gate: `authenticate :admin` on routes; guests go to `/admins/sign_in`
 - Avo home: show the first profile, or the index if none exists
 - Profile is singular: `Avo::ProfilesController` redirects index/new to the existing record
-- Custom sidebar in three groups: **Portfolio** (profile, socials), **Career** (experiences, education, certifications), **Work** (projects, skills)
+- Custom sidebar in four groups: **Messages** (contacts), **Portfolio** (profile, socials), **Career** (experiences, education, certifications), **Work** (projects, skills)
 - `ProjectSkill` exists as a resource but is hidden from the sidebar (`visible_on_sidebar = false`)
 - Avo locale follows the same cookie / `Accept-Language` (`AvoLocale`)
 - Appearance is locked to the dark brand (`scheme`, `neutral`, `accent` locked); tokens match the site (`avo-overrides.css` + `design_tokens.css`)
@@ -249,6 +249,7 @@ UI primitives: `app/frontend/components/ui/` (shadcn-vue / Reka UI). Page compos
 - PostgreSQL 16+
 - Bundler and npm
 - Optional for `bin/dev`: Overmind, Hivemind, or Foreman
+- Optional for local contact emails: [Mailpit](https://github.com/axllent/mailpit) (SMTP `localhost:1025`, UI `localhost:8025`)
 
 Local defaults (overridable):
 
@@ -293,6 +294,7 @@ bin/dev          # Rails + Vite (Procfile.dev)
 - App: http://localhost:3000
 - Admin: http://localhost:3000/admin
 - Vite: `js` process in the Procfile
+- Mailpit (not started by `bin/dev`): SMTP `localhost:1025`, inbox http://localhost:8025
 
 Console:
 
@@ -340,6 +342,21 @@ Do not commit `.env`, `master.key`, or Kamal secrets.
 | `TURNSTILE_SITE_KEY` | Public widget key (Inertia shared prop) |
 | `TURNSTILE_SECRET_KEY` | Server-side verification. Blank in local env skips the remote check |
 | `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Optional production analytics snippet |
+
+### Mail
+
+Development delivers through SMTP to **Mailpit** on `localhost:1025` (`config/environments/development.rb`). `bin/dev` does not start it. Delivery errors are ignored (`raise_delivery_errors` is false), so the contact form still succeeds if Mailpit is down — the message is stored in Avo either way.
+
+```bash
+docker run --rm -p 1025:1025 -p 8025:8025 axllent/mailpit
+```
+
+| Surface | URL |
+|---|---|
+| SMTP (Action Mailer) | `localhost:1025` |
+| Inbox UI | http://localhost:8025 |
+
+Production uses the `SMTP_*` env vars (`env.example`, injected by Kamal).
 
 ### Avo
 

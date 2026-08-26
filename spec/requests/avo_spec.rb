@@ -127,6 +127,29 @@ RSpec.describe "Avo admin panel", type: :request do
       expect(response).to have_http_status(:success)
       expect(response.body).to include("Carreira")
       expect(response.body).to include("Habilidades")
+      expect(response.body).to include("Mensagens")
+      expect(response.body).to include("Contatos")
+    end
+
+    it "lists contacts in the sidebar and shows a message" do
+      sign_in create(:admin)
+      create(:profile)
+      contact = create(:contact, subject: "Project inquiry", message: "I would like to discuss a project with you.")
+
+      get "/admin/resources/contacts"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include(I18n.t("admin.sidebar.messages"))
+      expect(response.body).to include(I18n.t("admin.sidebar.contacts"))
+      expect(response.body).to include("/admin/resources/contacts")
+      expect(response.body).to include(contact.subject)
+
+      get "/admin/resources/contacts/#{contact.to_param}"
+
+      expect(response).to have_http_status(:success)
+      expect(response.body).to include(contact.name)
+      expect(response.body).to include(contact.email)
+      expect(response.body).to include(contact.message)
     end
   end
 end

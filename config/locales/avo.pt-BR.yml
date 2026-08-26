@@ -30,6 +30,25 @@ pt-BR:
       project_skill:
         one: Habilidade do projeto
         other: Habilidades do projeto
+      contact:
+        one: Contato
+        other: Contatos
+        fields:
+          subject:
+            one: Assunto
+            other: Assuntos
+          message:
+            one: Mensagem
+            other: Mensagens
+          ip:
+            one: IP
+            other: IPs
+          user_agent:
+            one: User agent
+            other: User agents
+          created_at:
+            one: Recebido em
+            other: Recebido em
     field_translations:
       name:
         one: Nome
