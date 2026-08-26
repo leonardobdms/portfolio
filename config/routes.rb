@@ -6,6 +6,11 @@ Rails.application.routes.draw do
   end
 
   get "locale", to: "locales#update", as: :switch_locale
+  get "theme", to: "themes#update", as: :switch_theme
+  get "sitemap", to: "sitemaps#show", defaults: { format: :xml }
+
+  resources :projects, only: :show, param: :slug
+  resources :contacts, only: :create
 
   root "home#index"
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
@@ -15,7 +20,7 @@ Rails.application.routes.draw do
   get "up" => "rails/health#show", as: :rails_health_check
 
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
-  # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
+  get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
 
   # Defines the root path route ("/")

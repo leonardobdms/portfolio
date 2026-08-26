@@ -9,7 +9,8 @@ import type {
 
 export const SPECIALTY_SLUGS = ["ruby", "ruby-on-rails", "vue-js"] as const
 
-export type NavKey = "skills" | "experience" | "projects" | "about" | "contact"
+export type NavKey =
+  "skills" | "experience" | "projects" | "about" | "certifications" | "contact"
 
 export type NavItem = {
   key: NavKey
@@ -98,6 +99,10 @@ export function hasContact(profile: Profile): boolean {
   )
 }
 
+export function hasResume(profile: Profile): boolean {
+  return Boolean(profile.resume_url)
+}
+
 export function navItems(profile: Profile): NavItem[] {
   const items: NavItem[] = []
 
@@ -115,6 +120,10 @@ export function navItems(profile: Profile): NavItem[] {
 
   if (profile.bio) {
     items.push({ key: "about", href: "#about" })
+  }
+
+  if (profile.certifications.length > 0) {
+    items.push({ key: "certifications", href: "#certifications" })
   }
 
   if (hasContact(profile)) {
@@ -138,8 +147,9 @@ export function splitParagraphs(text: string): string[] {
     .filter(Boolean)
 }
 
-export function telHref(phone: string): string {
-  return `tel:${phone.replace(/[^\d+]/g, "")}`
+export function whatsappHref(phone: string): string {
+  const digits = phone.replace(/\D/g, "")
+  return `https://wa.me/${digits}`
 }
 
 function parseDate(value: string): Date | null {

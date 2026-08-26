@@ -1,0 +1,7 @@
+<% if ENV["ANALYTICS_SCRIPT_URL"].present? && ENV["ANALYTICS_WEBSITE_ID"].present? %>
+  <script
+    defer
+    src="<%= ENV["ANALYTICS_SCRIPT_URL"] %>"
+    data-website-id="<%= ENV["ANALYTICS_WEBSITE_ID"] %>"
+  ></script>
+<% end %>

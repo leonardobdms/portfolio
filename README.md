@@ -1,71 +1,71 @@
 # Portfolio
 
-Site pessoal CMS-driven para apresentar perfil, carreira, skills e projetos. O conteúdo vive no PostgreSQL e é editado no painel Avo; a home pública é uma página Inertia + Vue 3, com SSR, i18n (en / pt-BR) e identidade visual dark compartilhada entre o site e o admin.
+CMS-driven personal site for profile, career, skills, and projects. Content lives in PostgreSQL and is edited in Avo. The public home is a single Inertia + Vue 3 page with SSR, i18n (en / pt-BR), and a dark visual identity shared by the site and the admin panel.
 
-Repositório: [leonardobdms/portfolio](https://github.com/leonardobdms/portfolio)
+Repository: [leonardobdms/portfolio](https://github.com/leonardobdms/portfolio)
 
 ---
 
-## Sumário
+## Table of contents
 
-- [Visão geral](#visão-geral)
+- [Overview](#overview)
 - [Stack](#stack)
-- [Arquitetura](#arquitetura)
-- [Modelo de domínio](#modelo-de-domínio)
-- [Site público](#site-público)
-- [Painel administrativo](#painel-administrativo)
-- [Internacionalização](#internacionalização)
+- [Architecture](#architecture)
+- [Domain model](#domain-model)
+- [Public site](#public-site)
+- [Admin panel](#admin-panel)
+- [Internationalization](#internationalization)
 - [Design system](#design-system)
-- [Pré-requisitos](#pré-requisitos)
-- [Setup local](#setup-local)
-- [Configuração](#configuração)
-- [Testes e qualidade](#testes-e-qualidade)
+- [Prerequisites](#prerequisites)
+- [Local setup](#local-setup)
+- [Configuration](#configuration)
+- [Testing and quality](#testing-and-quality)
 - [CI](#ci)
 - [Deploy](#deploy)
-- [Estrutura do projeto](#estrutura-do-projeto)
-- [Convenções](#convenções)
+- [Project structure](#project-structure)
+- [Conventions](#conventions)
 
 ---
 
-## Visão geral
+## Overview
 
-O app é um portfólio de um único perfil (`Profile.current` = primeiro registro). Não há API REST pública nem SPA com roteador próprio: o Rails é a fonte da verdade. Controllers serializam os dados com Alba, o Typelizer gera os tipos TypeScript, e o Vue só renderiza.
+The app is a single-profile portfolio (`Profile.current` is the first record). There is no public REST API and no client-side router: Rails is the source of truth. Controllers serialize data with Alba, Typelizer generates TypeScript types, and Vue only renders.
 
-Há dois superfícies:
+There are two surfaces:
 
-| Superfície | Quem acessa | Tecnologia |
+| Surface | Audience | Stack |
 |---|---|---|
-| Home `/` | Visitantes | Inertia + Vue 3, SSR |
-| Admin `/admin` | Administradores autenticados | Avo 4, Devise |
+| Home `/` | Visitors | Inertia + Vue 3, SSR |
+| Admin `/admin` | Authenticated administrators | Avo 4, Devise |
 
-Seções da home só aparecem quando há dados (skills, experiências, projetos em destaque, bio, formação, contato). A navegação do header é gerada a partir do mesmo critério.
+Home sections render only when data exists (skills, experience, featured projects, bio, education, contact). Header navigation is derived from the same rules.
 
 ---
 
 ## Stack
 
-| Camada | Tecnologia | Versão |
+| Layer | Technology | Version |
 |---|---|---|
-| Linguagem | Ruby | 4.0.4 (`.ruby-version`) |
+| Language | Ruby | 4.0.4 (`.ruby-version`) |
 | Framework | Rails | ~> 8.1.3 |
-| Banco | PostgreSQL | 16 (CI e accessory de produção) |
-| Servidor | Puma + Thruster | — |
+| Database | PostgreSQL | 16 (CI and production accessory) |
+| Server | Puma + Thruster | — |
 | Frontend | Vue 3 + TypeScript | Vue 3.5, TS ~6, Node 22.12.0 |
 | Bridge | Inertia.js (`inertia_rails` + `@inertiajs/vue3`) | ~3.x |
-| Serialização | Alba + alba-inertia | — |
-| Tipos JS | Typelizer | rotas e serializers gerados |
+| Serialization | Alba + alba-inertia | — |
+| JS types | Typelizer | generated routes and serializers |
 | Assets | Vite (`rails_vite`) + Tailwind CSS 4 | — |
 | UI | shadcn-vue (Reka UI), Lucide | New York |
 | i18n | rails-i18n + vue-i18n | en, pt-BR |
-| Auth admin | Devise | ~> 5.0 |
+| Admin auth | Devise | ~> 5.0 |
 | CMS | Avo | >= 4.0 |
 | Jobs / cache / cable | Solid Queue, Solid Cache, Solid Cable | — |
-| Deploy | Kamal + Docker | imagem `portfolio` |
-| Testes | RSpec, FactoryBot, Capybara, SimpleCov | cobertura 100% em models e serializers |
+| Deploy | Kamal + Docker | `portfolio` image |
+| Tests | RSpec, FactoryBot, Capybara, SimpleCov | 100% coverage on models and serializers |
 
 ---
 
-## Arquitetura
+## Architecture
 
 ```
 Browser
@@ -74,30 +74,30 @@ Browser
   │     └─ @profile (Alba → HomeIndexSerializer)
   │           └─ Vue page: app/frontend/pages/home/index.vue
   │
-  ├─ GET /locale?locale=…   LocalesController#update  (cookie permanente)
+  ├─ GET /locale?locale=…   LocalesController#update  (permanent cookie)
   │
   ├─ GET /admins/sign_in    Admins::SessionsController (Inertia)
   │
   └─ /admin/*               Avo (authenticate :admin)
 ```
 
-Fluxo de dados da home:
+Home data flow:
 
-1. `HomeController` herda de `InertiaController` e define `@profile`.
-2. `InertiaController` inclui `Alba::Inertia::Controller` e `use_inertia_instance_props`.
-3. O serializer de página `HomeIndexSerializer` expõe `profile` via `ProfileSerializer`, que aninha experiências, formação, skills, projetos, certificações e redes sociais.
-4. Typelizer gera `app/frontend/types/serializers/HomeIndex.ts` (e os demais).
-5. A página Vue tipa as props com `HomeIndex` e deriva UI em `app/frontend/lib/home.ts` (projetos featured, agrupamento de skills, nav, datas, contato).
+1. `HomeController` inherits from `InertiaController` and assigns `@profile`.
+2. `InertiaController` includes `Alba::Inertia::Controller` and `use_inertia_instance_props`.
+3. The page serializer `HomeIndexSerializer` exposes `profile` through `ProfileSerializer`, which nests experiences, education, skills, projects, certifications, and social links.
+4. Typelizer generates `app/frontend/types/serializers/HomeIndex.ts` (and the rest).
+5. The Vue page types props as `HomeIndex` and derives UI in `app/frontend/lib/home.ts` (featured projects, skill grouping, nav, dates, contact).
 
-Locale é shared prop Inertia (`inertia_share locale`) e alimenta o `vue-i18n` no boot (`app/frontend/entrypoints/inertia.ts`).
+Locale is an Inertia shared prop (`inertia_share locale`) and feeds `vue-i18n` at boot (`app/frontend/entrypoints/inertia.ts`).
 
-SSR está ligado (`InertiaRails.configure { config.ssr_enabled = true }`). O Puma sobe o processo SSR via `plugin :inertia_ssr`. A imagem Docker pode desligar SSR com `--build-arg SSR_ENABLED=false`.
+SSR is enabled (`InertiaRails.configure { config.ssr_enabled = true }`). Puma starts the SSR process via `plugin :inertia_ssr`. The Docker image can disable SSR with `--build-arg SSR_ENABLED=false`.
 
-Não há Action Cable nem jobs de domínio no momento. Solid Queue roda dentro do Puma em produção (`SOLID_QUEUE_IN_PUMA=true`).
+There are no Action Cable channels or domain jobs yet. Solid Queue runs inside Puma in production (`SOLID_QUEUE_IN_PUMA=true`).
 
 ---
 
-## Modelo de domínio
+## Domain model
 
 ```
 Profile 1 ──* Experience
@@ -107,138 +107,138 @@ Profile 1 ──* Experience
         1 ──* Skill
         1 ──* Project
                  * ──* Skill   (ProjectSkill)
-Admin              (Devise, isolado do perfil)
+Admin              (Devise, isolated from the profile)
 ```
 
 ### Profile
 
-Registro âncora do site. Campos: nome, headline, bio, localização, e-mail, telefone, GitHub, LinkedIn, website, avatar, currículo, `available_for_work`.
+Anchor record for the site. Fields: name, headline, bio, location, email, phone, GitHub, LinkedIn, website, avatar, resume, `available_for_work`.
 
-`Profile.current` retorna o primeiro registro. O admin trata o perfil como recurso singular: index e new redirecionam para o registro existente.
+`Profile.current` returns the first record. Admin treats the profile as a singular resource: index and new redirect to the existing record.
 
 ### Experience
 
-Cargo, empresa, tipo de contrato, localização, descrição, datas, `current`, `position`. Ordenação padrão: `position`, depois `id`.
+Role, company, employment type, location, description, dates, `current`, `position`. Default order: `position`, then `id`.
 
 ### Education
 
-Instituição, curso, grau, descrição, datas, `current`, `position`.
+Institution, course, degree, description, dates, `current`, `position`.
 
 ### Certification
 
-Nome, emissor, descrição, URL/ID da credencial, datas de emissão/expiração, `position`.
+Name, issuer, description, credential URL/ID, issued/expires dates, `position`.
 
 ### Skill
 
-Nome, slug único, categoria, ícone (identificador kebab-case, não URL/SVG), nível, descrição, `position`. Ícone deve casar com `/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/`.
+Name, unique slug, category, icon (kebab-case identifier, not a URL or SVG), level, description, `position`. Icon must match `/\A[a-z0-9]+(?:-[a-z0-9]+)*\z/`.
 
-Skills de especialidade na hero: slugs `ruby`, `ruby-on-rails`, `vue-js` (`SPECIALTY_SLUGS` em `app/frontend/lib/home.ts`).
+Hero specialty skills: slugs `ruby`, `ruby-on-rails`, `vue-js` (`SPECIALTY_SLUGS` in `app/frontend/lib/home.ts`).
 
 ### Project
 
-Nome, slug único, descrições, imagem, GitHub, demo, `featured`, datas, `position`. A home só lista projetos com `featured: true`. Associação N:N com skills via `project_skills` (unicidade `project_id` + `skill_id`).
+Name, unique slug, descriptions, image, GitHub, demo, `featured`, dates, `position`. The home page lists only projects with `featured: true`. Many-to-many with skills via `project_skills` (unique `project_id` + `skill_id`).
 
 ### SocialLink
 
-Plataforma, URL, username, ícone, `position`. Se existirem, substituem o fallback GitHub/LinkedIn/website do próprio perfil.
+Platform, URL, username, icon, `position`. When present, they replace the profile's GitHub/LinkedIn/website fallback.
 
 ### Admin
 
-Devise: `database_authenticatable`, `recoverable`, `rememberable`, `validatable`. Sem cadastro público. Seeds criam um admin **somente em ambiente local**.
+Devise modules: `database_authenticatable`, `recoverable`, `rememberable`, `validatable`. No public sign-up. Seeds create an admin **only in the local environment**.
 
-Coleções filhas do perfil ordenam por `position`. Destroy do perfil cascadeia para as associações.
+Profile child collections order by `position`. Destroying a profile cascades to associations.
 
 ---
 
-## Site público
+## Public site
 
-Página única (`pages/home/index.vue`), seções condicionais:
+Single page (`pages/home/index.vue`) with conditional sections:
 
-| Seção | Componente | Condição |
+| Section | Component | Condition |
 |---|---|---|
-| Header sticky | `SiteHeader` | sempre |
-| Hero | `HeroSection` | sempre (com dados do perfil) |
+| Sticky header | `SiteHeader` | always |
+| Hero | `HeroSection` | always (from profile data) |
 | Skills | `SkillsSection` | `skills.length > 0` |
-| Experiência | `ExperienceSection` | `experiences.length > 0` |
-| Projetos | `FeaturedProjectsSection` | algum `featured` |
-| Sobre | `AboutSection` | `bio` presente |
-| Formação | `EducationSection` | `educations.length > 0` |
-| Contato | `ContactSection` | e-mail, telefone ou redes |
+| Experience | `ExperienceSection` | `experiences.length > 0` |
+| Projects | `FeaturedProjectsSection` | any `featured` |
+| About | `AboutSection` | `bio` present |
+| Education | `EducationSection` | `educations.length > 0` |
+| Contact | `ContactSection` | email, phone, or socials |
 
-Helpers de apresentação ficam em `app/frontend/lib/home.ts` (não no template): featured, agrupamento por categoria, range de datas, `tel:` links, nav items.
+Presentation helpers live in `app/frontend/lib/home.ts` (not in the template): featured projects, grouping by category, date ranges, WhatsApp links, nav items.
 
-Login do admin é Inertia (`pages/admins/sessions/new.vue`), não o view Devise padrão. Após login bem-sucedido usa `inertia_location` para `/admin`.
+Admin login is Inertia (`pages/admins/sessions/new.vue`), not the default Devise view. A successful sign-in uses `inertia_location` to `/admin`.
 
-Health check: `GET /up` (silenciado nos logs de produção).
+Health check: `GET /up` (silenced in production logs).
 
 ---
 
-## Painel administrativo
+## Admin panel
 
 - URL: `/admin` (Avo `root_path`)
-- Gate: `authenticate :admin` nas rotas; visitantes vão para `/admins/sign_in`
-- Home do Avo: show do primeiro perfil, ou index se ainda não existir
-- Perfil é singular: `Avo::ProfilesController` redireciona index/new para o registro existente
-- Sidebar customizada em três grupos: **Portfolio** (perfil, redes), **Carreira** (experiências, formação, certificações), **Trabalho** (projetos, skills)
-- `ProjectSkill` existe como resource mas fica fora da sidebar (`visible_on_sidebar = false`)
-- Locale do Avo segue o mesmo cookie/`Accept-Language` (`AvoLocale`)
-- Aparência travada no dark brand (`scheme`, `neutral`, `accent` locked); tokens alinhados ao site (`avo-overrides.css` + `design_tokens.css`)
+- Gate: `authenticate :admin` on routes; guests go to `/admins/sign_in`
+- Avo home: show the first profile, or the index if none exists
+- Profile is singular: `Avo::ProfilesController` redirects index/new to the existing record
+- Custom sidebar in three groups: **Portfolio** (profile, socials), **Career** (experiences, education, certifications), **Work** (projects, skills)
+- `ProjectSkill` exists as a resource but is hidden from the sidebar (`visible_on_sidebar = false`)
+- Avo locale follows the same cookie / `Accept-Language` (`AvoLocale`)
+- Appearance is locked to the dark brand (`scheme`, `neutral`, `accent` locked); tokens match the site (`avo-overrides.css` + `design_tokens.css`)
 
-Credenciais de desenvolvimento (apenas `Rails.env.local?`, via `db/seeds.rb`):
+Development credentials (only when `Rails.env.local?`, via `db/seeds.rb`):
 
 ```
-e-mail:    admin@admin.com
-senha:     password@123
+email:     admin@admin.com
+password:  password@123
 ```
 
 ---
 
-## Internacionalização
+## Internationalization
 
-Locales disponíveis: `en` (default) e `pt-BR`. Fallback ativo.
+Available locales: `en` (default) and `pt-BR`. Fallbacks are enabled.
 
-Resolução (`LocaleResolver`):
+Resolution (`LocaleResolver`):
 
-1. Cookie permanente `locale`, se for um locale suportado
-2. Header `Accept-Language` (`pt*` → pt-BR, `en*` → en)
+1. Permanent `locale` cookie, if it is a supported locale
+2. `Accept-Language` header (`pt*` → pt-BR, `en*` → en)
 3. Default `en`
 
-Troca: `GET /locale?locale=pt-BR` (ou `en`), persistida no cookie, redirect back no mesmo host.
+Switch: `GET /locale?locale=pt-BR` (or `en`), stored in the cookie, redirect back on the same host.
 
-Tradução em duas camadas:
+Translation layers:
 
-| Camada | Arquivos | Uso |
+| Layer | Files | Usage |
 |---|---|---|
-| Rails | `config/locales/*.yml` | Avo, Active Record, Devise, título do app |
+| Rails | `config/locales/*.yml` | Avo, Active Record, Devise, app title |
 | Vue | `app/frontend/locales/{en,pt-BR}.json` | home, login, switcher |
 
-O HTML raiz usa `lang="<%= I18n.locale %>"`. Datas na home usam `Intl.DateTimeFormat` com o locale atual.
+The root HTML uses `lang="<%= I18n.locale %>"`. Dates on the home page use `Intl.DateTimeFormat` with the current locale.
 
 ---
 
 ## Design system
 
-Hex **só** em `app/assets/stylesheets/design_tokens.css`. No Tailwind, usar as classes tokenizadas (`bg-background`, `text-text`, `border-border`, `bg-primary`, …). Não inventar cores nem hex isolado.
+Hex values live **only** in `app/assets/stylesheets/design_tokens.css`. In Tailwind, use tokenized classes (`bg-background`, `text-text`, `border-border`, `bg-primary`, …). Do not invent colors or isolated hex values.
 
-Identidade: dark, minimal, profissional, tecnológica. Sem visual gamer, neon, gradientes pesados ou sombras excessivas. Accent (`cyan`) só em destaques pequenos.
+Identity: dark, minimal, professional, technological. No gamer look, neon, heavy gradients, or excess shadows. Accent (`cyan`) is for small highlights only.
 
-O Avo usa a mesma paleta (`config.appearance` + `avo-overrides.css`). Não criar tema de admin separado.
+Avo uses the same palette (`config.appearance` + `avo-overrides.css`). Do not create a separate admin theme.
 
-Componentes UI: `app/frontend/components/ui/` (shadcn-vue / Reka UI). Composição de páginas em `app/frontend/components/home/`.
+UI primitives: `app/frontend/components/ui/` (shadcn-vue / Reka UI). Page composition: `app/frontend/components/home/`.
 
 ---
 
-## Pré-requisitos
+## Prerequisites
 
-- Ruby 4.0.4 (rbenv, asdf, ou equivalente)
+- Ruby 4.0.4 (rbenv, asdf, or equivalent)
 - Node.js 22.12.0 (`.node-version`)
 - PostgreSQL 16+
-- Bundler e npm
-- Opcional para `bin/dev`: Overmind, Hivemind ou Foreman
+- Bundler and npm
+- Optional for `bin/dev`: Overmind, Hivemind, or Foreman
 
-Variáveis locais padrão (podem ser sobrescritas):
+Local defaults (overridable):
 
-| Variável | Default |
+| Variable | Default |
 |---|---|
 | `PORTFOLIO_DATABASE_USERNAME` | `postgres` |
 | `PORTFOLIO_DATABASE_PASSWORD` | `postgres` |
@@ -248,7 +248,7 @@ Variáveis locais padrão (podem ser sobrescritas):
 
 ---
 
-## Setup local
+## Local setup
 
 ```bash
 git clone git@github.com:leonardobdms/portfolio.git
@@ -256,21 +256,21 @@ cd portfolio
 bin/setup
 ```
 
-`bin/setup` instala gems e pacotes npm, roda `db:prepare` e sobe o servidor (`bin/dev`). Para resetar o banco no setup:
+`bin/setup` installs gems and npm packages, runs `db:prepare`, and starts the server (`bin/dev`). To reset the database during setup:
 
 ```bash
 bin/setup --reset
 ```
 
-Para só preparar o ambiente, sem subir o server:
+To prepare the environment without starting the server:
 
 ```bash
 bin/setup --skip-server
 ```
 
-Seeds populam o perfil, experiências, formação, skills, projetos, redes e o admin local.
+Seeds populate the profile, experiences, education, skills, projects, social links, and the local admin.
 
-### Desenvolvimento
+### Development
 
 ```bash
 bin/dev          # Rails + Vite (Procfile.dev)
@@ -278,7 +278,7 @@ bin/dev          # Rails + Vite (Procfile.dev)
 
 - App: http://localhost:3000
 - Admin: http://localhost:3000/admin
-- Vite: processo `js` no Procfile
+- Vite: `js` process in the Procfile
 
 Console:
 
@@ -286,142 +286,142 @@ Console:
 bin/rails console
 ```
 
-Regenerar tipos TypeScript a partir dos serializers/rotas:
+Regenerate TypeScript types from serializers and routes:
 
 ```bash
 bin/rails typelizer:generate:refresh
 ```
 
-Os arquivos em `app/frontend/types/serializers` e `app/frontend/routes` são gerados. Não editar à mão; o CI falha se estiverem desatualizados.
+Files under `app/frontend/types/serializers` and `app/frontend/routes` are generated. Do not edit them by hand; CI fails if they are stale.
 
 ---
 
-## Configuração
+## Configuration
 
-### Banco
+### Database
 
 `config/database.yml`:
 
 - development: `portfolio_development`
 - test: `portfolio_test`
-- production: `portfolio_production` (+ databases Solid: cache, queue, cable)
+- production: `portfolio_production` (plus Solid databases: cache, queue, cable)
 
-Produção usa usuário `portfolio`, host `DB_HOST` (no Kamal: `portfolio-db`) e senha `PORTFOLIO_DATABASE_PASSWORD`.
+Production uses user `portfolio`, host `DB_HOST` (Kamal: `portfolio-db`), and password `PORTFOLIO_DATABASE_PASSWORD`.
 
-### Segredos
+### Secrets
 
-- `RAILS_MASTER_KEY` — decrypt de `config/credentials.yml.enc`
-- Kamal: `.kamal/secrets` injeta `RAILS_MASTER_KEY`, `PORTFOLIO_DATABASE_PASSWORD`, `POSTGRES_PASSWORD`
+- `RAILS_MASTER_KEY` — decrypts `config/credentials.yml.enc`
+- Kamal: `.kamal/secrets` injects `RAILS_MASTER_KEY`, `PORTFOLIO_DATABASE_PASSWORD`, `POSTGRES_PASSWORD`
 
-Não commitar `.env`, `master.key` nem secrets do Kamal.
+Do not commit `.env`, `master.key`, or Kamal secrets.
 
 ### Inertia
 
-`config/initializers/inertia_rails.rb`: versionamento por digest Vite, history encryption em produção, SSR ligado.
+`config/initializers/inertia_rails.rb`: versioning from the Vite digest, history encryption in production, SSR enabled.
 
 ### Avo
 
-`config/initializers/avo.rb`: `current_user_method :current_admin`, sign-out Devise, home no perfil.
+`config/initializers/avo.rb`: `current_user_method :current_admin`, Devise sign-out, home on the profile.
 
 ---
 
-## Testes e qualidade
+## Testing and quality
 
 ```bash
-bin/rspec                         # suíte
-bin/rubocop                       # estilo Ruby
+bin/rspec                         # suite
+bin/rubocop                       # Ruby style
 npm run lint                      # ESLint (zero warnings)
 npm run format                    # Prettier --check
 npm run check                     # vue-tsc + tsc
-bin/brakeman --no-pager           # segurança estática
-bin/bundler-audit                 # gems vulneráveis
-bin/ci                            # pipeline local completa
+bin/brakeman --no-pager           # static security
+bin/bundler-audit                 # vulnerable gems
+bin/ci                            # full local pipeline
 ```
 
-SimpleCov cobre `app/models` e `app/serializers` com **mínimo 100%**.
+SimpleCov covers `app/models` and `app/serializers` with a **100% minimum**.
 
-Especificações:
+Specs:
 
-| Área | Caminho |
+| Area | Path |
 |---|---|
 | Models | `spec/models/` |
 | Serializers | `spec/serializers/` |
-| Login Devise/Inertia | `spec/requests/admins/sessions_spec.rb` |
-| Avo (auth, identidade, perfil singular) | `spec/requests/avo_spec.rb` |
+| Devise/Inertia login | `spec/requests/admins/sessions_spec.rb` |
+| Avo (auth, identity, singular profile) | `spec/requests/avo_spec.rb` |
 | Locale | `spec/requests/locales_spec.rb` |
 
-Request specs de Inertia usam matchers (`render_component`, `have_props`, `have_flash`), não acesso direto a `inertia.component`.
+Inertia request specs use matchers (`render_component`, `have_props`, `have_flash`), not direct access to `inertia.component`.
 
-O passo `bin/ci` também replanta seeds em test (`db:seed:replant`) e exige tipos Typelizer limpos no git.
+`bin/ci` also replants seeds in test (`db:seed:replant`) and requires Typelizer types to be clean in git.
 
 ---
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) em PRs e pushes em `main`:
+GitHub Actions (`.github/workflows/ci.yml`) on PRs and pushes to `main`:
 
 1. **scan_ruby** — Brakeman + bundler-audit
 2. **lint_js** — ESLint, Prettier, typecheck
 3. **lint** — RuboCop
-4. **test** — Postgres 16, `db:test:prepare spec`; screenshots Capybara em falha
+4. **test** — Postgres 16, `db:test:prepare spec`; Capybara screenshots on failure
 
-Dependabot semanal: bundler, npm e GitHub Actions.
+Weekly Dependabot: bundler, npm, and GitHub Actions.
 
 ---
 
 ## Deploy
 
-Produção via **Kamal** (`config/deploy.yml`) em container Docker (`Dockerfile`).
+Production uses **Kamal** (`config/deploy.yml`) and a Docker container (`Dockerfile`).
 
-| Item | Valor atual |
+| Item | Current value |
 |---|---|
-| Serviço | `portfolio` |
-| Servidor web | `192.168.15.7` |
+| Service | `portfolio` |
+| Web server | `192.168.15.7` |
 | SSH | user `leonardo` |
 | Registry | local `localhost:5555` |
-| DB accessory | Postgres 16 (`portfolio-db`), não exposto na LAN |
+| DB accessory | Postgres 16 (`portfolio-db`), not exposed on the LAN |
 | Volume | `portfolio_storage:/rails/storage` |
-| Assets | `/rails/public` (bridging entre deploys) |
-| Jobs | Solid Queue no Puma |
+| Assets | `/rails/public` (bridged across deploys) |
+| Jobs | Solid Queue in Puma |
 
-SSL Let's Encrypt está comentado: o host atual é IP de LAN; a app sobe em HTTP. Para domínio público, descomentar `proxy.ssl` / `proxy.host` e ligar `assume_ssl` + `force_ssl` em produção.
+Let's Encrypt SSL is commented out: the current host is a LAN IP, so the app serves HTTP. For a public domain, uncomment `proxy.ssl` / `proxy.host` and enable `assume_ssl` + `force_ssl` in production.
 
-Comandos úteis:
+Useful commands:
 
 ```bash
 bin/kamal deploy
 bin/kamal logs          # alias: app logs -f
-bin/kamal console       # rails console no container
+bin/kamal console       # rails console in the container
 bin/kamal shell
 bin/kamal dbc
 ```
 
-Imagem: multi-stage, jemalloc, usuário não-root `rails`. Entry point (`bin/docker-entrypoint`) roda `db:prepare` ao iniciar o server. Assets precompilados no build; bundle SSR com `npx vite build --ssr` quando `SSR_ENABLED=true`.
+Image: multi-stage, jemalloc, non-root `rails` user. The entrypoint (`bin/docker-entrypoint`) runs `db:prepare` when starting the server. Assets are precompiled at build time; the SSR bundle is built with `npx vite build --ssr` when `SSR_ENABLED=true`.
 
 ---
 
-## Estrutura do projeto
+## Project structure
 
 ```
 app/
-  avo/resources/          Resources Avo (Profile, Project, Skill, …)
+  avo/resources/          Avo resources (Profile, Project, Skill, …)
   controllers/
     home_controller.rb
     locales_controller.rb
     admins/sessions_controller.rb
-    avo/                  Overrides (perfil singular)
+    avo/                  overrides (singular profile)
     concerns/             SetLocale, AvoLocale
   frontend/
     entrypoints/          inertia.ts, application.css
-    pages/                Páginas Inertia (home, login)
-    components/home/      Seções da landing
-    components/ui/        Primitivos shadcn-vue
-    locales/              JSON vue-i18n
-    lib/home.ts           Derivação de UI da home
-    types/serializers/    Gerado pelo Typelizer
-    routes/               Gerado pelo Typelizer
+    pages/                Inertia pages (home, login)
+    components/home/      landing sections
+    components/ui/        shadcn-vue primitives
+    locales/              vue-i18n JSON
+    lib/home.ts           home UI derivation
+    types/serializers/    generated by Typelizer
+    routes/               generated by Typelizer
   models/
-  serializers/            Alba (+ helpers Typelizer / alba-inertia)
+  serializers/            Alba (+ Typelizer / alba-inertia helpers)
   assets/stylesheets/     design_tokens.css, avo-overrides.css
 config/
   deploy.yml              Kamal
@@ -439,22 +439,22 @@ Procfile.dev
 
 ---
 
-## Convenções
+## Conventions
 
-- **Inertia é server-driven.** Props vêm do controller. Não usar `useEffect` + `fetch` para dados de página. Forms: `useForm` / `<Form>` do Inertia, não react-hook-form (este app é Vue).
-- **Redirects externos** (se surgirem): `inertia_location`, nunca `redirect_to` para URL fora da app em fluxo Inertia.
-- **Serializers, não `as_json`.** Página `Home#index` → `HomeIndexSerializer`. Tipos TypeScript regenerados com Typelizer.
-- **Cores:** tokens do design system. Avo e site compartilham a identidade.
-- **i18n:** strings de UI no JSON Vue; labels de modelo/admin no YAML Rails. Não hardcodar copy visível.
-- **Perfil único.** Novas entidades de conteúdo devem `belongs_to :profile` e ordenar por `position`.
-- **Ícone de skill** é identificador (`ruby`, `vue-js`), nunca arquivo ou URL.
-- **Não editar** `app/frontend/types/serializers` nem `app/frontend/routes` manualmente.
+- **Inertia is server-driven.** Props come from the controller. Do not use `useEffect` + `fetch` for page data. Forms: Inertia `useForm` / `<Form>`, not react-hook-form (this app is Vue).
+- **External redirects** (if they appear): `inertia_location`, never `redirect_to` for a URL outside the app in an Inertia flow.
+- **Serializers, not `as_json`.** Page `Home#index` → `HomeIndexSerializer`. TypeScript types are regenerated with Typelizer.
+- **Colors:** design-system tokens. Avo and the site share the same identity.
+- **i18n:** UI strings in Vue JSON; model/admin labels in Rails YAML. Do not hardcode visible copy.
+- **Single profile.** New content entities should `belongs_to :profile` and order by `position`.
+- **Skill icons** are identifiers (`ruby`, `vue-js`), never files or URLs.
+- **Do not edit** `app/frontend/types/serializers` or `app/frontend/routes` by hand.
 
-### Adicionar conteúdo na home
+### Adding content to the home page
 
-1. Campo/associação no model + migration + validação
-2. Expor no serializer Alba correspondente
+1. Field/association on the model + migration + validation
+2. Expose it on the matching Alba serializer
 3. `bin/rails typelizer:generate:refresh`
-4. Resource Avo (e sidebar, se for navegável)
-5. Usar o campo na página/seção Vue
-6. Specs de model e serializer (manter cobertura 100%)
+4. Avo resource (and sidebar, if it should be navigable)
+5. Use the field in the Vue page/section
+6. Model and serializer specs (keep 100% coverage)

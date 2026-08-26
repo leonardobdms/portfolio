@@ -59,6 +59,9 @@ group :development, :test do
   # RSpec for Rails 7+
   gem "rspec-rails", "~> 8.0"
   gem "factory_bot_rails"
+
+  gem "pry-rails", "~> 0.3.11"
+  gem "pry", "~> 0.16.0"
 end
 
 group :development do
@@ -81,3 +84,13 @@ gem "devise", "~> 5.0"
 gem "avo", ">= 4.0.0"
 
 gem "dotenv", "~> 3.2"
+
+gem "rack-attack", "~> 6.8", groups: [ :development, :test ]
+
+gem "axe-core-rspec", "~> 4.13", groups: [ :development, :test ]
+gem "sentry-ruby", "~> 6.7", groups: [ :development, :test ]
+gem "sentry-rails", "~> 6.7", groups: [ :development, :test ]
+
+gem "validators", "~> 3.4"
+
+gem "root_domain", "~> 0.1.2"

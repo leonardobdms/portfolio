@@ -8,6 +8,9 @@ import pluginVue from "eslint-plugin-vue"
 
 export default defineConfigWithVueTs(
   {
+    ignores: ["vitest.config.ts"],
+  },
+  {
     name: "app/files-to-lint",
     files: ["app/frontend/**/*.{ts,mts,tsx,vue}"],
   },

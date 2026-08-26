@@ -1,14 +1,16 @@
 <script setup lang="ts">
-import { MapPin } from "lucide-vue-next"
+import { Download, MapPin } from "lucide-vue-next"
 import { computed } from "vue"
 import { useI18n } from "vue-i18n"
 
+import SkillIcon from "@/components/SkillIcon.vue"
 import SocialLinks from "@/components/home/SocialLinks.vue"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { Button } from "@/components/ui/button"
 import {
   featuredProjects,
   hasContact,
+  hasResume,
   profileSocials,
   specialtySkills,
 } from "@/lib/home"
@@ -40,7 +42,7 @@ const initials = computed(() =>
 
 <template>
   <section
-    class="mx-auto grid min-h-[calc(100dvh-4rem)] max-w-7xl items-center gap-12 px-4 pt-16 pb-16 md:px-8 md:pt-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16"
+    class="hero-grid relative mx-auto grid min-h-[calc(100dvh-4rem)] max-w-7xl items-center gap-12 px-4 pt-16 pb-16 md:px-8 md:pt-20 lg:grid-cols-[minmax(0,1.1fr)_minmax(0,0.9fr)] lg:gap-16"
   >
     <div class="max-w-2xl">
       <p
@@ -95,6 +97,17 @@ const initials = computed(() =>
         >
           {{ t("home.viewWork") }}
         </Button>
+        <Button
+          v-if="hasResume(profile)"
+          as="a"
+          :href="profile.resume_url!"
+          variant="outline"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          <Download :stroke-width="1.5" aria-hidden="true" />
+          {{ t("home.downloadResume") }}
+        </Button>
         <SocialLinks :links="socials" />
       </div>
     </div>
@@ -102,20 +115,26 @@ const initials = computed(() =>
     <ul
       v-if="specialties.length > 0"
       class="hidden flex-col justify-center gap-3 lg:flex"
-      aria-hidden="true"
     >
       <li
         v-for="(skill, index) in specialties"
         :key="skill.id"
-        class="border-border bg-surface motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-3 rounded-xl border px-6 py-5"
+        class="border-border bg-surface motion-safe:animate-in motion-safe:fade-in motion-safe:slide-in-from-bottom-3 group rounded-xl border px-6 py-5"
         :class="[
           index === 1 ? 'lg:ml-10' : '',
           index === 0 ? 'delay-100' : index === 1 ? 'delay-200' : 'delay-300',
         ]"
       >
-        <p class="text-text text-3xl font-semibold tracking-tighter">
-          {{ skill.name }}
-        </p>
+        <div class="flex items-center gap-3">
+          <SkillIcon
+            :icon="skill.icon"
+            :category="skill.category"
+            class="size-6"
+          />
+          <p class="text-text text-3xl font-semibold tracking-tighter">
+            {{ skill.name }}
+          </p>
+        </div>
         <p class="text-text-muted mt-1 text-sm">{{ skill.category }}</p>
       </li>
     </ul>

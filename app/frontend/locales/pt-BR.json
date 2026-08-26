@@ -2,34 +2,65 @@
   "locale": {
     "label": "Idioma",
     "en": "EN",
-    "ptBR": "PT"
+    "ptBR": "PT",
+    "switchToEn": "Mudar para inglês",
+    "switchToPtBR": "Mudar para português"
+  },
+  "theme": {
+    "switchToLight": "Mudar para tema claro",
+    "switchToDark": "Mudar para tema escuro"
   },
   "home": {
     "title": "Início",
     "mainNav": "Principal",
     "openMenu": "Abrir menu",
     "closeMenu": "Fechar menu",
+    "skipToContent": "Pular para o conteúdo",
+    "backToTop": "Voltar ao topo",
     "cta": "Vamos conversar",
     "viewWork": "Ver projetos",
+    "downloadResume": "Baixar currículo",
     "available": "Disponível para novas oportunidades",
     "skillsTitle": "Skills",
     "experienceTitle": "Experiência",
     "projectsTitle": "Projetos em destaque",
     "aboutTitle": "Sobre",
     "educationTitle": "Formação",
+    "certificationsTitle": "Certificações",
     "contactTitle": "Vamos conversar?",
     "contactBodyAvailable": "Estou disponível para novas oportunidades e projetos.",
-    "contactBody": "Quer conversar sobre um projeto? Fale comigo por e-mail.",
+    "contactBody": "Quer conversar sobre um projeto? Fale comigo por e-mail ou use o formulário abaixo.",
+    "certificationExpired": "Expirada",
+    "certificationIssued": "Emitida em {date}",
+    "certificationId": "ID: {id}",
+    "certificationView": "Ver credencial",
+    "projectPrevious": "Projeto anterior",
+    "projectNext": "Próximo projeto",
     "present": "em andamento",
     "expectedCompletion": "Previsão de conclusão: {date}",
     "since": "Desde {year}",
     "email": "E-mail",
     "phone": "Telefone",
+    "contactForm": {
+      "name": "Nome",
+      "email": "E-mail",
+      "subject": "Assunto",
+      "message": "Mensagem",
+      "submit": "Enviar mensagem",
+      "submitting": "Enviando...",
+      "rateLimited": "Muitas mensagens enviadas. Tente novamente mais tarde.",
+      "captcha": "Verificação de segurança"
+    },
+    "footer": {
+      "copyright": "© {year} {name}",
+      "source": "Código-fonte"
+    },
     "nav": {
       "skills": "Skills",
       "experience": "Experiência",
       "projects": "Projetos",
       "about": "Sobre",
+      "certifications": "Certificações",
       "contact": "Contato"
     }
   },

@@ -5,6 +5,8 @@ export type FlashData = {
 
 export interface SharedProps {
   locale: string
+  theme: string
+  turnstile_site_key?: string | null
 }
 
 export type * from "./serializers"

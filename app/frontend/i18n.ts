@@ -5,7 +5,7 @@ import ptBR from "@/locales/pt-BR.json"
 import { switchLocale } from "@/routes"
 
 export const DEFAULT_LOCALE = "en"
-export const SUPPORTED_LOCALES = ["en", "pt-BR"] as const
+export const SUPPORTED_LOCALES = ["pt-BR", "en"] as const
 
 export type SupportedLocale = (typeof SUPPORTED_LOCALES)[number]
 

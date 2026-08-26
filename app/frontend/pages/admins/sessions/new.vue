@@ -31,10 +31,6 @@
           {{ t("auth.subtitle") }}
         </p>
 
-        <p v-if="alertMessage" class="text-danger mt-6 text-sm" role="alert">
-          {{ alertMessage }}
-        </p>
-
         <form class="mt-8 flex flex-col gap-5" @submit.prevent="submit">
           <div class="flex flex-col gap-2">
             <label class="text-text text-sm font-medium" for="admin_email">
@@ -102,8 +98,7 @@
 </template>
 
 <script setup lang="ts">
-import { Head, Link, useForm, usePage } from "@inertiajs/vue3"
-import { computed } from "vue"
+import { Head, Link, useForm } from "@inertiajs/vue3"
 import { useI18n } from "vue-i18n"
 
 import LocaleSwitcher from "@/components/LocaleSwitcher.vue"
@@ -116,8 +111,6 @@ const props = defineProps<{
 }>()
 
 const { t } = useI18n()
-const page = usePage()
-const alertMessage = computed(() => page.flash?.alert)
 
 const form = useForm({
   admin: {

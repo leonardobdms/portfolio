@@ -2,6 +2,13 @@ pt-BR:
   app:
     name: Portfolio
     title: Portfolio
+    description: Portfólio pessoal com skills, experiência e projetos.
+  contact:
+    success: Obrigado pela mensagem. Retorno em breve.
+    captcha_failed: Complete a verificação de segurança e tente novamente.
+    rate_limited: Muitas mensagens enviadas. Tente novamente mais tarde.
+    mailer:
+      subject: "Contato do portfólio: %{subject}"
   admin:
     sidebar:
       portfolio: Portfolio
@@ -48,6 +55,9 @@ pt-BR:
       project_skill:
         one: Habilidade do projeto
         other: Habilidades do projeto
+      contact:
+        one: Contato
+        other: Contatos
     attributes:
       admin:
         email: E-mail
@@ -123,9 +133,21 @@ pt-BR:
       project_skill:
         project: Projeto
         skill: Habilidade
+      contact:
+        name: Nome
+        email: E-mail
+        subject: Assunto
+        message: Mensagem
+        ip: IP
+        user_agent: User agent
     errors:
       models:
         skill:
           attributes:
             icon:
               invalid: "deve ser um identificador da tecnologia (ex: ruby, rails, vue). Não use SVG, PNG ou URLs."
+        contact:
+          attributes:
+            message:
+              too_short: "deve ter no mínimo %{count} caracteres"
+              too_long: "deve ter no máximo %{count} caracteres"

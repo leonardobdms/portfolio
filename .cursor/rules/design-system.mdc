@@ -7,26 +7,28 @@ alwaysApply: true
 
 Before creating any visual component, check existing design tokens. Do not use isolated hex values when a token exists.
 
-## Palette
+## Themes
 
-Hex values are defined only in `app/assets/stylesheets/design_tokens.css`.
+The site supports `light` and `dark` themes via the `.dark` class on `<html>`. Default is dark. Hex values live only in `app/assets/stylesheets/design_tokens.css`.
 
-| Token | Hex | Tailwind |
-|---|---|---|
-| primary | `#6366F1` | `bg-primary` `text-primary` |
-| primary-light | `#818CF8` | `bg-primary-light` |
-| primary-dark | `#4F46E5` | `bg-primary-dark` |
-| secondary | `#8B5CF6` | `bg-secondary` |
-| accent | `#06B6D4` | `bg-accent` (sparingly) |
-| background | `#0B1120` | `bg-background` |
-| surface | `#111827` | `bg-surface` |
-| surface-light | `#1E293B` | `bg-surface-light` |
-| text | `#F8FAFC` | `text-text` |
-| text-muted | `#94A3B8` | `text-text-muted` |
-| border | `#334155` | `border-border` |
-| success | `#22C55E` | `text-success` |
-| warning | `#F59E0B` | `text-warning` |
-| danger | `#EF4444` | `text-danger` |
+| Token | Dark | Light | Tailwind |
+|---|---|---|---|
+| primary | `#6366F1` | `#6366F1` | `bg-primary` `text-primary` |
+| primary-light | `#818CF8` | `#818CF8` | `bg-primary-light` |
+| primary-dark | `#4F46E5` | `#4F46E5` | `bg-primary-dark` |
+| secondary | `#8B5CF6` | `#8B5CF6` | `bg-secondary` |
+| accent | `#06B6D4` | `#06B6D4` | `bg-accent` (sparingly) |
+| background | `#0B1120` | `#F8FAFC` | `bg-background` |
+| surface | `#111827` | `#F1F5F9` | `bg-surface` |
+| surface-light | `#1E293B` | `#E2E8F0` | `bg-surface-light` |
+| text | `#F8FAFC` | `#0F172A` | `text-text` |
+| text-muted | `#94A3B8` | `#64748B` | `text-text-muted` |
+| border | `#334155` | `#CBD5E1` | `border-border` |
+| success | `#22C55E` | `#22C55E` | `text-success` |
+| warning | `#F59E0B` | `#F59E0B` | `text-warning` |
+| danger | `#EF4444` | `#EF4444` | `text-danger` |
+
+**Exception:** skill/brand icons may use official brand hex on hover only (from `simple-icons` data, not design tokens).
 
 ```html
 <!-- BAD -->

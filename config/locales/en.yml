@@ -2,6 +2,13 @@ en:
   app:
     name: Portfolio
     title: Portfolio
+    description: Personal portfolio showcasing skills, experience, and projects.
+  contact:
+    success: Thank you for your message. I will get back to you soon.
+    captcha_failed: Please complete the security check and try again.
+    rate_limited: Too many messages sent. Please try again later.
+    mailer:
+      subject: "Portfolio contact: %{subject}"
   admin:
     sidebar:
       portfolio: Portfolio
@@ -48,6 +55,9 @@ en:
       project_skill:
         one: Project skill
         other: Project skills
+      contact:
+        one: Contact
+        other: Contacts
     attributes:
       admin:
         email: Email
@@ -123,6 +133,13 @@ en:
       project_skill:
         project: Project
         skill: Skill
+      contact:
+        name: Name
+        email: Email
+        subject: Subject
+        message: Message
+        ip: IP
+        user_agent: User agent
     errors:
       models:
         skill:

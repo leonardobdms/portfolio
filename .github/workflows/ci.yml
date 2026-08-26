@@ -3,7 +3,7 @@ name: CI
 on:
   pull_request:
   push:
-    branches: [ main ]
+    branches: [ master ]
 
 jobs:
   scan_ruby:
@@ -51,6 +51,25 @@ jobs:
 
       - name: Type check
         run: npm run check
+
+  test_js:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v7
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version-file: .node-version
+          cache: npm
+
+      - name: Install JS dependencies
+        run: npm ci
+
+      - name: Run Vitest
+        run: npm run test
 
   lint:
     runs-on: ubuntu-latest

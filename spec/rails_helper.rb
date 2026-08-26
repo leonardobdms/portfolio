@@ -8,6 +8,7 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 
 require "rspec/rails"
 require "inertia_rails/rspec"
+require "axe-rspec"
 
 Rails.root.glob("spec/support/**/*.rb").sort.each { |path| require path }
 

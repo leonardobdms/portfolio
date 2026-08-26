@@ -1,6 +1,8 @@
 <script setup lang="ts">
+import { Link } from "@inertiajs/vue3"
 import { ExternalLink, Github } from "lucide-vue-next"
 
+import SkillIcon from "@/components/SkillIcon.vue"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import {
@@ -12,6 +14,7 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { cn } from "@/lib/utils"
+import { projects } from "@/routes"
 import type { Project } from "@/types"
 
 const props = defineProps<{
@@ -24,7 +27,7 @@ const hasLinks = Boolean(props.project.github_url || props.project.demo_url)
 
 <template>
   <Card
-    class="border-border bg-surface gap-0 overflow-hidden py-0 shadow-none transition-transform motion-safe:hover:-translate-y-0.5"
+    class="border-border bg-surface hover:border-primary/40 gap-0 overflow-hidden py-0 shadow-none transition-colors motion-safe:hover:-translate-y-0.5"
   >
     <div
       :class="
@@ -55,7 +58,9 @@ const hasLinks = Boolean(props.project.github_url || props.project.demo_url)
 
     <CardHeader class="pt-6 pb-4">
       <CardTitle class="text-text text-xl tracking-tight md:text-2xl">
-        {{ project.name }}
+        <Link :href="projects.show(project.slug).url" class="nav-link">
+          {{ project.name }}
+        </Link>
       </CardTitle>
       <CardDescription
         v-if="project.short_description"
@@ -73,8 +78,13 @@ const hasLinks = Boolean(props.project.github_url || props.project.demo_url)
         v-for="skill in project.skills"
         :key="skill.id"
         variant="outline"
-        class="border-border text-text-muted rounded-xl"
+        class="border-border text-text-muted group inline-flex items-center gap-1.5 rounded-xl"
       >
+        <SkillIcon
+          :icon="skill.icon"
+          :category="skill.category"
+          class="size-3.5"
+        />
         {{ skill.name }}
       </Badge>
     </CardContent>

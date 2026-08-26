@@ -1,5 +1,25 @@
 /* Official design tokens. Hex values live here only. */
+
+/* Light theme (default) */
 :root {
+  --ds-primary: #6366f1;
+  --ds-primary-light: #818cf8;
+  --ds-primary-dark: #4f46e5;
+  --ds-secondary: #8b5cf6;
+  --ds-accent: #06b6d4;
+  --ds-background: #f8fafc;
+  --ds-surface: #f1f5f9;
+  --ds-surface-light: #e2e8f0;
+  --ds-text: #0f172a;
+  --ds-text-muted: #64748b;
+  --ds-border: #cbd5e1;
+  --ds-success: #22c55e;
+  --ds-warning: #f59e0b;
+  --ds-danger: #ef4444;
+}
+
+/* Dark theme */
+.dark {
   --ds-primary: #6366f1;
   --ds-primary-light: #818cf8;
   --ds-primary-dark: #4f46e5;

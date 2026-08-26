@@ -2,34 +2,65 @@
   "locale": {
     "label": "Language",
     "en": "EN",
-    "ptBR": "PT"
+    "ptBR": "PT",
+    "switchToEn": "Switch to English",
+    "switchToPtBR": "Switch to Portuguese"
+  },
+  "theme": {
+    "switchToLight": "Switch to light theme",
+    "switchToDark": "Switch to dark theme"
   },
   "home": {
     "title": "Home",
     "mainNav": "Primary",
     "openMenu": "Open menu",
     "closeMenu": "Close menu",
+    "skipToContent": "Skip to content",
+    "backToTop": "Back to top",
     "cta": "Let's talk",
     "viewWork": "View work",
+    "downloadResume": "Download resume",
     "available": "Available for new opportunities",
     "skillsTitle": "Skills",
     "experienceTitle": "Experience",
     "projectsTitle": "Featured projects",
     "aboutTitle": "About",
     "educationTitle": "Education",
+    "certificationsTitle": "Certifications",
     "contactTitle": "Let's talk",
     "contactBodyAvailable": "I am available for new opportunities and projects.",
-    "contactBody": "Want to talk about a project? Reach me by email.",
+    "contactBody": "Want to talk about a project? Reach me by email or use the form below.",
+    "certificationExpired": "Expired",
+    "certificationIssued": "Issued {date}",
+    "certificationId": "ID: {id}",
+    "certificationView": "View credential",
+    "projectPrevious": "Previous project",
+    "projectNext": "Next project",
     "present": "Present",
     "expectedCompletion": "Expected completion: {date}",
     "since": "Since {year}",
     "email": "Email",
     "phone": "Phone",
+    "contactForm": {
+      "name": "Name",
+      "email": "Email",
+      "subject": "Subject",
+      "message": "Message",
+      "submit": "Send message",
+      "submitting": "Sending...",
+      "rateLimited": "Too many messages sent. Please try again later.",
+      "captcha": "Security check"
+    },
+    "footer": {
+      "copyright": "© {year} {name}",
+      "source": "Source code"
+    },
     "nav": {
       "skills": "Skills",
       "experience": "Experience",
       "projects": "Projects",
       "about": "About",
+      "certifications": "Certifications",
       "contact": "Contact"
     }
   },

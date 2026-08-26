@@ -1,6 +1,7 @@
 # frozen_string_literal: true
 
 InertiaRails.configure do |config|
+  config.flash_keys = %i[notice alert]
   config.version = RailsVite.digest
   config.encrypt_history = Rails.env.production?
   config.use_script_element_for_initial_page = true

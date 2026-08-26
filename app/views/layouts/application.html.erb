@@ -1,8 +1,11 @@
 <!DOCTYPE html>
-<html lang="<%= I18n.locale %>">
+<html lang="<%= I18n.locale %>" class="<%= theme_class %>">
   <head>
     <title data-inertia><%= content_for(:title) || t("app.title") %></title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="theme-color" content="#0B1120" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F8FAFC" media="(prefers-color-scheme: light)">
+    <meta name="description" content="<%= t("app.description") %>">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="application-name" content="<%= t("app.name") %>">
     <meta name="mobile-web-app-capable" content="yes">
@@ -13,7 +16,11 @@
     <%= yield :head %>
 
     <%# Enable PWA manifest for installable apps (make sure to enable in config/routes.rb too!) %>
-    <%#= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+    <%= tag.link rel: "manifest", href: pwa_manifest_path(format: :json) %>
+
+    <% if Profile.current %>
+      <%= render "shared/person_json_ld", profile: Profile.current %>
+    <% end %>
 
     <link rel="icon" href="/favicon.ico" sizes="32x32">
     <link rel="icon" href="/icon.png" type="image/png" sizes="512x512">
@@ -25,5 +32,6 @@
 
   <body>
     <%= yield %>
+    <%= render "shared/analytics" if Rails.env.production? %>
   </body>
 </html>

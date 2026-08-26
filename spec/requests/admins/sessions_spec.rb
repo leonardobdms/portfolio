@@ -10,9 +10,10 @@ RSpec.describe "Admin sessions", type: :request do
       expect(response).to have_http_status(:ok)
       expect(inertia).to render_component("admins/sessions/new")
       expect(inertia).to have_props(
-        email: nil,
+        email: "",
         session_url: admin_session_path,
-        locale: "en"
+        locale: "en",
+        theme: "dark"
       )
     end
   end
@@ -25,7 +26,8 @@ RSpec.describe "Admin sessions", type: :request do
         admin: { email: admin.email, password: "password123" }
       }
 
-      expect(response).to redirect_to("/admin")
+      expect(response).to have_http_status(:conflict)
+      expect(response.headers["X-Inertia-Location"]).to eq("/admin")
       expect(request.env["warden"].user(:admin)).to eq(admin)
     end
 

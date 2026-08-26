@@ -1,21 +1,11 @@
 <script setup lang="ts">
-import { Github, Globe, Linkedin } from "lucide-vue-next"
-import type { Component } from "vue"
-
+import SocialIcon from "@/components/SocialIcon.vue"
 import { Button } from "@/components/ui/button"
 import type { ProfileSocial } from "@/lib/home"
 
 const props = defineProps<{
   links: ProfileSocial[]
 }>()
-
-function iconFor(link: ProfileSocial): Component {
-  const key = (link.icon ?? link.label).toLowerCase()
-
-  if (key.includes("github")) return Github
-  if (key.includes("linkedin")) return Linkedin
-  return Globe
-}
 </script>
 
 <template>
@@ -29,8 +19,9 @@ function iconFor(link: ProfileSocial): Component {
         target="_blank"
         rel="noopener noreferrer"
         :aria-label="link.label"
+        class="group"
       >
-        <component :is="iconFor(link)" :stroke-width="1.5" aria-hidden="true" />
+        <SocialIcon :icon="link.icon ?? link.label" />
       </Button>
     </li>
   </ul>
