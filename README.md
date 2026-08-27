@@ -186,6 +186,8 @@ Admin login is Inertia (`pages/admins/sessions/new.vue`), not the default Devise
 
 Health check: `GET /up` (silenced in production logs). Theme is a permanent `theme` cookie (`dark` default, `light` supported), shared with Inertia as `theme`.
 
+Open Graph / Twitter cards use `avatar_url` (home) or `image_url` (project) when present. Otherwise they fall back to `/og.png` (`public/og.png`, 1200×630, dark brand background + LM mark).
+
 ---
 
 ## Admin panel
@@ -521,6 +523,9 @@ lib/                      LocaleResolver, ThemeResolver, TurnstileVerifier, Cont
 spec/
 Dockerfile
 Procfile.dev
+public/
+  og.png                  Open Graph fallback (1200×630)
+  icon.png                App icon / PWA
 ```
 
 ---
