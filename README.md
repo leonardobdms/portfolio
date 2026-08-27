@@ -327,7 +327,7 @@ Production uses user `portfolio` (`PORTFOLIO_DATABASE_USERNAME`), host `PORTFOLI
 ### Secrets
 
 - `RAILS_MASTER_KEY` — decrypts `config/credentials.yml.enc`
-- Kamal: `.kamal/secrets` injects `RAILS_MASTER_KEY`, `PORTFOLIO_DATABASE_PASSWORD`, `POSTGRES_PASSWORD`
+- Kamal: `.kamal/secrets.example` lists every key injected from `.kamal/secrets` (`env.secret` in `config/deploy.yml`, plus accessory `POSTGRES_PASSWORD`)
 
 Do not commit `.env`, `master.key`, or Kamal secrets.
 
@@ -341,7 +341,7 @@ Do not commit `.env`, `master.key`, or Kamal secrets.
 |---|---|
 | `TURNSTILE_SITE_KEY` | Public widget key (Inertia shared prop) |
 | `TURNSTILE_SECRET_KEY` | Server-side verification. Blank in local env skips the remote check |
-| `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Optional production analytics snippet |
+| `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Optional Umami snippet in production. Script URL (`https://cloud.umami.is/script.js` or self-hosted `/script.js`) and website UUID. Both required; injected by Kamal |
 
 ### Mail
 
