@@ -57,8 +57,12 @@ Rails.application.configure do
   # Set this to true and configure the email server for immediate delivery to raise delivery errors.
   # config.action_mailer.raise_delivery_errors = false
 
-  # Set host to be used by links generated in mailer templates.
-  config.action_mailer.default_url_options = { host: "example.com" }
+  # Public site host for links in emails (Devise reset, etc.). Not SMTP_HOST.
+  # Kamal sets MAILER_HOST in env.clear. Fallback lets assets:precompile boot.
+  config.action_mailer.default_url_options = {
+    host: ENV.fetch("MAILER_HOST", "localhost"),
+    protocol: "https"
+  }
 
   # Specify outgoing SMTP server. Remember to add smtp/* credentials via bin/rails credentials:edit.
   config.action_mailer.smtp_settings = {

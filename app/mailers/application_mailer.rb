@@ -1,4 +1,6 @@
+# frozen_string_literal: true
+
 class ApplicationMailer < ActionMailer::Base
-  default from: "leo.bdms@gmail.com"
+  default from: -> { ENV.fetch("MAILER_FROM", "noreply@localhost") }
   layout "mailer"
 end

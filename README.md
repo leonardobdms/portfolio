@@ -61,6 +61,7 @@ Home sections render only when data exists (skills, experience, featured project
 | CMS | Avo | >= 4.0 |
 | Jobs / cache / cable | Solid Queue, Solid Cache, Solid Cable | — |
 | Deploy | Kamal + Docker | `portfolio` image |
+| Observability | Glitchtip (Sentry SDKs) + Umami | optional, production |
 | Tests | RSpec, FactoryBot, Capybara, SimpleCov, Vitest | 100% coverage on app Ruby (models, serializers, controllers, mailers, helpers, lib) and frontend lib |
 
 ---
@@ -116,7 +117,7 @@ Contact            (inbound messages from the public form)
 
 ### Profile
 
-Anchor record for the site. Fields: name, headline, bio, location, email, phone, GitHub, LinkedIn, website, avatar, resume, `available_for_work`.
+Anchor record for the site. Fields: name, headline, bio, location, email, phone, GitHub, LinkedIn, website, `avatar_url`, `resume_url`, `available_for_work`. URLs are text fields, not Active Storage attachments.
 
 `Profile.current` returns the first record. Admin treats the profile as a singular resource: index and new redirect to the existing record.
 
@@ -140,7 +141,7 @@ Hero specialty skills: slugs `ruby`, `ruby-on-rails`, `vue-js` (`SPECIALTY_SLUGS
 
 ### Project
 
-Name, unique slug, descriptions, image, GitHub, demo, `featured`, dates, `position`. The home page lists only projects with `featured: true`. Many-to-many with skills via `project_skills` (unique `project_id` + `skill_id`).
+Name, unique slug, descriptions, `image_url`, GitHub, demo, `featured`, dates, `position`. The home page lists only projects with `featured: true`. Many-to-many with skills via `project_skills` (unique `project_id` + `skill_id`). `image_url` is a text field, not Active Storage.
 
 ### SocialLink
 
@@ -268,8 +269,11 @@ Local defaults (overridable):
 ```bash
 git clone git@github.com:leonardobdms/portfolio.git
 cd portfolio
+cp env.example .env.development.local   # fill as needed; gitignored
 bin/setup
 ```
+
+Database keys default to `postgres` / `localhost` / `5432` if blank. `bin/setup` does not copy `env.example`.
 
 `bin/setup` installs gems and npm packages, runs `db:prepare`, and starts the server (`bin/dev`). To reset the database during setup:
 
@@ -314,6 +318,15 @@ Files under `app/frontend/types/serializers` and `app/frontend/routes` are gener
 
 ## Configuration
 
+### Environment files
+
+| File | Purpose |
+|---|---|
+| `env.example` | Local template. Copy to `.env.development.local` (gitignored). Comments document every app env var |
+| `.kamal/secrets.example` | Production template. Copy to `.kamal/secrets` (gitignored). Keys must match `config/deploy.yml` |
+
+Do not commit `.env`, `.env.*.local`, `master.key`, or Kamal secrets.
+
 ### Database
 
 `config/database.yml`:
@@ -327,9 +340,7 @@ Production uses user `portfolio` (`PORTFOLIO_DATABASE_USERNAME`), host `PORTFOLI
 ### Secrets
 
 - `RAILS_MASTER_KEY` — decrypts `config/credentials.yml.enc`
-- Kamal: `.kamal/secrets.example` lists every key injected from `.kamal/secrets` (`env.secret` in `config/deploy.yml`, plus accessory `POSTGRES_PASSWORD`)
-
-Do not commit `.env`, `master.key`, or Kamal secrets.
+- Kamal injects `.kamal/secrets` as `env.secret` (runtime container) and `builder.secrets` (image build), plus accessory `POSTGRES_PASSWORD`
 
 ### Inertia
 
@@ -341,7 +352,16 @@ Do not commit `.env`, `master.key`, or Kamal secrets.
 |---|---|
 | `TURNSTILE_SITE_KEY` | Public widget key (Inertia shared prop) |
 | `TURNSTILE_SECRET_KEY` | Server-side verification. Blank in local env skips the remote check |
-| `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Optional Umami snippet in production. Script URL (`https://cloud.umami.is/script.js` or self-hosted `/script.js`) and website UUID. Both required; injected by Kamal |
+
+### Observability
+
+Optional. Blank values disable each integration.
+
+| Variable | Purpose |
+|---|---|
+| `SENTRY_DSN` | Glitchtip DSN for the Rails SDK (`config/initializers/sentry.rb`). Runtime `env.secret`; reports only from production |
+| `VITE_SENTRY_DSN` | Glitchtip DSN for `@sentry/vue` (`app/frontend/entrypoints/inertia.ts`). Vite inlines `VITE_*` at image build (`builder.secrets`). Use a separate Glitchtip project (JavaScript / Vue). Local `bin/dev` skips it (`import.meta.env.PROD` is false) |
+| `ANALYTICS_SCRIPT_URL` / `ANALYTICS_WEBSITE_ID` | Umami snippet (`app/views/shared/_analytics.html.erb`). Both required. The layout renders it only in production. Cloud: `https://cloud.umami.is/script.js`; self-hosted: `https://analytics.example.com/script.js` |
 
 ### Mail
 
@@ -356,7 +376,7 @@ docker run --rm -p 1025:1025 -p 8025:8025 axllent/mailpit
 | SMTP (Action Mailer) | `localhost:1025` |
 | Inbox UI | http://localhost:8025 |
 
-Production uses the `SMTP_*` env vars (`env.example`, injected by Kamal).
+Production uses the `SMTP_*` env vars from `.kamal/secrets` (`SMTP_USER_NAME`, `SMTP_PASSWORD`, `SMTP_ADDRESS`, `SMTP_HOST`, `SMTP_PORT`). `MAILER_HOST` and `MAILER_FROM` come from Kamal `env.clear`: the public site hostname for email links (`config/environments/production.rb`) and the From address (`ContactMailer` and Devise). `MAILER_HOST` is not the SMTP server. Development hard-codes `localhost:3000` for links and falls back to `noreply@localhost` when `MAILER_FROM` is unset.
 
 ### Avo
 
@@ -408,7 +428,7 @@ Inertia request specs use matchers (`render_component`, `have_props`, `have_flas
 
 ## CI
 
-GitHub Actions (`.github/workflows/ci.yml`) on PRs and pushes to `main`:
+GitHub Actions (`.github/workflows/ci.yml`) on PRs and pushes to `master`:
 
 1. **scan_ruby** — Brakeman + bundler-audit
 2. **lint_js** — ESLint, Prettier, typecheck
@@ -435,7 +455,17 @@ Production uses **Kamal** (`config/deploy.yml`) and a Docker container (`Dockerf
 | Assets | `/rails/public` (bridged across deploys) |
 | Jobs | Solid Queue in Puma |
 
-Public HTTPS is Cloudflare Tunnel → `http://localhost:80` (kamal-proxy). `proxy.ssl` stays off so Let's Encrypt does not fight Cloudflare. Rails has `assume_ssl` + `force_ssl`. The tunnel hostname `leonardombd.dev.br` must be a dedicated ingress rule *before* other apps (Glitchtip on `:8000`).
+Public HTTPS is Cloudflare Tunnel → `http://localhost:80` (kamal-proxy). `proxy.ssl` stays off so Let's Encrypt does not fight Cloudflare. Rails has `assume_ssl` + `force_ssl`. The tunnel hostname `leonardombd.dev.br` must be a dedicated ingress rule *before* other apps (Glitchtip on `:8000`). SSH user `leonardo` must be in the `docker` group on the VM.
+
+Copy `.kamal/secrets.example` to `.kamal/secrets` and fill real values before deploy.
+
+| Integration | How it is injected |
+|---|---|
+| Turnstile, Rails Glitchtip (`SENTRY_DSN`), Umami, SMTP | Runtime `env.secret` |
+| Mailer host and From (`MAILER_HOST`, `MAILER_FROM`) | Runtime `env.clear` — public site hostname for email links, and the From address for contact + Devise mail |
+| Vue Glitchtip (`VITE_SENTRY_DSN`) | `builder.secrets` — baked into the Vite client and SSR bundles during `assets:precompile` / `vite build --ssr`. Changing it requires a new image build, not only a container restart |
+
+Umami’s snippet is included only in production, and only when both analytics env vars are set.
 
 Useful commands:
 
@@ -447,7 +477,7 @@ bin/kamal shell
 bin/kamal dbc
 ```
 
-Image: multi-stage, jemalloc, non-root `rails` user. The entrypoint (`bin/docker-entrypoint`) runs `db:prepare` when starting the server. Assets are precompiled at build time; the SSR bundle is built with `npx vite build --ssr` when `SSR_ENABLED=true`.
+Image: multi-stage, jemalloc, non-root `rails` user. The entrypoint (`bin/docker-entrypoint`) runs `db:prepare` when starting the server. Assets are precompiled at build time; the SSR bundle is built with `npx vite build --ssr` when `SSR_ENABLED=true`. The Dockerfile mounts `VITE_SENTRY_DSN` as a BuildKit secret (`required=false` so a plain `docker build` still works).
 
 ---
 
@@ -482,7 +512,7 @@ app/
 config/
   deploy.yml              Kamal
   locales/                Rails i18n (en, pt-BR, Devise, Avo)
-  initializers/           avo, inertia, typelizer, alba, devise
+  initializers/           avo, inertia, typelizer, alba, devise, sentry, rack_attack
 db/
   schema.rb
   seeds.rb

@@ -65,12 +65,18 @@ COPY . .
 # -j 1 disable parallel compilation to avoid a QEMU bug: https://github.com/rails/bootsnap/issues/495
 RUN bundle exec bootsnap precompile -j 1 app/ lib/
 
-# Precompiling assets for production without requiring secret RAILS_MASTER_KEY
-RUN SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
+# Precompiling assets for production without requiring secret RAILS_MASTER_KEY.
+# VITE_SENTRY_DSN is a Kamal builder secret (see config/deploy.yml). required=false
+# keeps a plain `docker build` working; blank disables @sentry/vue.
+RUN --mount=type=secret,id=VITE_SENTRY_DSN,required=false \
+    export VITE_SENTRY_DSN="$(cat /run/secrets/VITE_SENTRY_DSN 2>/dev/null || true)" && \
+    SECRET_KEY_BASE_DUMMY=1 ./bin/rails assets:precompile
 
 # Build SSR bundle when SSR_ENABLED=true, then discard node_modules
 ARG SSR_ENABLED
-RUN if [ "$SSR_ENABLED" = "true" ]; then npx vite build --ssr; fi && \
+RUN --mount=type=secret,id=VITE_SENTRY_DSN,required=false \
+    export VITE_SENTRY_DSN="$(cat /run/secrets/VITE_SENTRY_DSN 2>/dev/null || true)" && \
+    if [ "$SSR_ENABLED" = "true" ]; then npx vite build --ssr; fi && \
     rm -rf node_modules
 
 # Branch: SSR enabled — ship the JS runtime alongside the app

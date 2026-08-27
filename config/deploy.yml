@@ -50,6 +50,10 @@ env:
     PORTFOLIO_DATABASE_HOST: portfolio-db
     PORTFOLIO_DATABASE_PORT: 5432
 
+    # Public hostname for Action Mailer URL helpers. Not SMTP_HOST (the mail server).
+    MAILER_HOST: leonardombd.dev.br
+    MAILER_FROM: leo.bdms@gmail.com
+
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
 
@@ -84,6 +88,9 @@ builder:
     type: registry
     image: portfolio-build-cache
     options: mode=max
+  # Vite inlines VITE_* at compile time. Runtime env.secret cannot enable @sentry/vue.
+  secrets:
+    - VITE_SENTRY_DSN
 
   # # Build image via remote server (useful for faster amd64 builds on arm64 computers)
   # remote: ssh://docker@docker-builder-server
