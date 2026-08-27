@@ -52,7 +52,7 @@ env:
 
     # Public hostname for Action Mailer URL helpers. Not SMTP_HOST (the mail server).
     MAILER_HOST: leonardombd.dev.br
-    MAILER_FROM: leo.bdms@gmail.com
+    MAILER_FROM: contato@leonardombd.dev.br
 
     # Set number of processes dedicated to Solid Queue (default: 1)
     # JOB_CONCURRENCY: 3
