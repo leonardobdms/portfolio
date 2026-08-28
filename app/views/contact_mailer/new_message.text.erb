@@ -1,3 +1,12 @@
-<%= @contact.name %> &lt;<%= @contact.email %>&gt; wrote:
+<%= t("contact.mailer.heading") %>
+
+<%= t("activerecord.attributes.contact.name") %>: <%= @contact.name %>
+<%= t("activerecord.attributes.contact.email") %>: <%= @contact.email %>
+<%= t("activerecord.attributes.contact.subject") %>: <%= @contact.subject %>
+
+<%= t("activerecord.attributes.contact.message") %>
 
 <%= @contact.message %>
+
+<%= t("contact.mailer.view_in_admin") %>:
+<%= @admin_contact_url %>

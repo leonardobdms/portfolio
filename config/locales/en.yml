@@ -3,12 +3,18 @@ en:
     name: Portfolio
     title: Portfolio
     description: Personal portfolio showcasing skills, experience, and projects.
+  mailer:
+    view_site: Open the website
+    footer: Sent from %{name}
   contact:
     success: Thank you for your message. I will get back to you soon.
     captcha_failed: Please complete the security check and try again.
     rate_limited: Too many messages sent. Please try again later.
     mailer:
       subject: "Portfolio contact: %{subject}"
+      preheader: "%{name} — %{subject}"
+      heading: New message
+      view_in_admin: Open in admin
   admin:
     sidebar:
       messages: Messages

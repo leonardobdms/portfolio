@@ -21,6 +21,12 @@ pt-BR:
         subject: "Instruções de confirmação"
       reset_password_instructions:
         subject: "Instruções de redefinição de senha"
+        preheader: Escolha uma nova senha para a sua conta.
+        heading: Redefinir senha
+        greeting: "Foi pedida uma redefinição para %{email}."
+        instruction: Use o botão abaixo para escolher uma nova senha. A senha atual continua valendo até você concluir.
+        action: Escolher nova senha
+        ignore: Se você não pediu isso, ignore o e-mail.
       unlock_instructions:
         subject: "Instruções de desbloqueio"
       email_changed:

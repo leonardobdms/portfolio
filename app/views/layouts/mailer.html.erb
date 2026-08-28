@@ -1,13 +1,83 @@
+<% site_name = Profile.current&.name.presence || t("app.name") %>
 <!DOCTYPE html>
-<html>
+<html lang="<%= I18n.locale %>" xmlns="http://www.w3.org/1999/xhtml" xmlns:o="urn:schemas-microsoft-com:office:office">
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="dark">
+    <meta name="supported-color-schemes" content="dark">
+    <meta name="x-apple-disable-message-reformatting">
+    <title><%= message.subject %></title>
+    <!--[if mso]>
+    <xml>
+      <o:OfficeDocumentSettings>
+        <o:PixelsPerInch>96</o:PixelsPerInch>
+      </o:OfficeDocumentSettings>
+    </xml>
+    <![endif]-->
     <style>
-      /* Email styles need to be inline */
+      :root { color-scheme: dark; supported-color-schemes: dark; }
+      html, body { margin: 0 !important; padding: 0 !important; width: 100% !important; background-color: #0B1120 !important; }
+      body, table, td, p, a { -webkit-text-size-adjust: 100%; -ms-text-size-adjust: 100%; }
+      table, td { mso-table-lspace: 0pt; mso-table-rspace: 0pt; border-collapse: collapse; }
+      img { -ms-interpolation-mode: bicubic; border: 0; outline: none; text-decoration: none; }
+      a { color: #818CF8; }
+      .email-content p { margin: 0 0 16px 0; font-size: 16px; line-height: 24px; color: #F8FAFC; }
+      @media only screen and (max-width: 620px) {
+        .email-pad { padding-left: 20px !important; padding-right: 20px !important; }
+      }
     </style>
   </head>
-
-  <body>
-    <%= yield %>
+  <body width="100%" style="margin: 0; padding: 0; width: 100%; background-color: #0B1120;" bgcolor="#0B1120">
+    <% if @preheader.present? %>
+      <div style="display: none; font-size: 1px; line-height: 1px; max-height: 0; max-width: 0; opacity: 0; overflow: hidden; mso-hide: all; color: #0B1120;">
+        <%= @preheader %>&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;&nbsp;&zwnj;
+      </div>
+    <% end %>
+    <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#0B1120" style="width: 100%; background-color: #0B1120;">
+      <tr>
+        <td align="center" valign="top" style="padding-top: 32px; padding-bottom: 32px; padding-left: 16px; padding-right: 16px;">
+          <!--[if mso]>
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="600" align="center"><tr><td>
+          <![endif]-->
+          <table role="presentation" cellpadding="0" cellspacing="0" border="0" width="100%" bgcolor="#111827" style="width: 100%; max-width: 600px; background-color: #111827;">
+            <tr>
+              <td bgcolor="#6366F1" style="background-color: #6366F1; height: 4px; font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="email-pad" style="padding-top: 28px; padding-bottom: 20px; padding-left: 32px; padding-right: 32px; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;">
+                <a href="<%= root_url %>" style="font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; font-size: 15px; line-height: 22px; font-weight: 600; letter-spacing: -0.02em; color: #F8FAFC; text-decoration: none;">
+                  <%= site_name %>
+                </a>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#334155" style="background-color: #334155; height: 1px; font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="email-content email-pad" style="padding-top: 28px; padding-bottom: 8px; padding-left: 32px; padding-right: 32px; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; font-size: 16px; line-height: 24px; color: #F8FAFC;">
+                <%= yield %>
+              </td>
+            </tr>
+            <tr>
+              <td bgcolor="#334155" style="background-color: #334155; height: 1px; font-size: 0; line-height: 0;">&nbsp;</td>
+            </tr>
+            <tr>
+              <td class="email-pad" style="padding-top: 20px; padding-bottom: 28px; padding-left: 32px; padding-right: 32px; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif;">
+                <p style="margin: 0 0 8px 0; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 20px; color: #94A3B8;">
+                  <a href="<%= root_url %>" style="font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 20px; color: #818CF8; text-decoration: underline;"><%= t("mailer.view_site") %></a>
+                </p>
+                <p style="margin: 0; font-family: -apple-system, BlinkMacSystemFont, Helvetica, Arial, sans-serif; font-size: 13px; line-height: 20px; color: #94A3B8;">
+                  <%= t("mailer.footer", name: site_name) %>
+                </p>
+              </td>
+            </tr>
+          </table>
+          <!--[if mso]>
+          </td></tr></table>
+          <![endif]-->
+        </td>
+      </tr>
+    </table>
   </body>
 </html>

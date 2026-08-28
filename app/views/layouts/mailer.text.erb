@@ -1,1 +1,9 @@
+<% site_name = Profile.current&.name.presence || t("app.name") %>
+<%= site_name %>
+<%= root_url %>
+
 <%= yield %>
+
+-- 
+<%= t("mailer.footer", name: site_name) %>
+<%= t("mailer.view_site") %>: <%= root_url %>

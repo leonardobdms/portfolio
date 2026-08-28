@@ -3,12 +3,18 @@ pt-BR:
     name: Portfolio
     title: Portfolio
     description: Portfólio pessoal com skills, experiência e projetos.
+  mailer:
+    view_site: Abrir o site
+    footer: Enviado por %{name}
   contact:
     success: Obrigado pela mensagem. Retorno em breve.
     captcha_failed: Complete a verificação de segurança e tente novamente.
     rate_limited: Muitas mensagens enviadas. Tente novamente mais tarde.
     mailer:
       subject: "Contato do portfólio: %{subject}"
+      preheader: "%{name} — %{subject}"
+      heading: Nova mensagem
+      view_in_admin: Abrir no admin
   admin:
     sidebar:
       messages: Mensagens

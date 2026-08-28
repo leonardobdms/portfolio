@@ -21,6 +21,12 @@ en:
         subject: "Confirmation instructions"
       reset_password_instructions:
         subject: "Reset password instructions"
+        preheader: Choose a new password for your account.
+        heading: Reset password
+        greeting: "A reset was requested for %{email}."
+        instruction: Use the button below to choose a new password. The current password stays in place until you finish.
+        action: Choose a new password
+        ignore: If you did not ask for this, ignore the email.
       unlock_instructions:
         subject: "Unlock instructions"
       email_changed:
